@@ -1,0 +1,129 @@
+---
+const artists = [
+  {
+    name: "Matías Zelarayán",
+    role: "Artista Visual y Curador",
+    bio: "Abstracionismo contemporáneo",
+  },
+  {
+    name: "Roque Manzaras",
+    role: "Artista Visual y Escritor",
+    bio: "Escultura y espacio",
+  },
+  {
+    name: "Maximiliano Romero Almenar",
+    role: "Artista Visual y Muralista",
+    bio: "Fotografía documental",
+  },
+];
+---
+
+<section id="acerca" class="about">
+  <div class="about-container">
+    <h2>Acerca de</h2>
+    <div class="about-content">
+      <div class="about-text">
+        <h3>El Bondi Colectivo</h3>
+        <p>
+          Vivir, sobrevivir, territorios de la precariedad. El bondi es un colectivo de artistas que se formó en Rosario, Santa Fe, en 2024. Nuestro objetivo es crear un espacio de encuentro y colaboración para artistas emergentes y establecidos que trabajan en diversas disciplinas.
+          Somos un colectivo de artistas dedicados a explorar las fronteras del arte contemporáneo. Nuestro trabajo
+          refleja la diversidad de voces creativas que convergen en Rosario, Santa Fe.
+        </p>
+        <p>
+          Creemos que el arte es un medio poderoso para transformar perspectivas y conectar comunidades. Cada obra en
+          nuestro catálogo es una ventana a mundos imaginativos únicos.
+        </p>
+        <p>
+          El bondi centra sus actividades en torno a prácticas artísticas contemporáneas, lo que implica hablar no ya de objetos y de formatos habituales de exposiciones estáticas, sino de prácticas que se desarrollan en relación con el contexto, mediante una amplia inclusión de recursos que permiten una mirada crítica al entorno. El objeto como obra de arte pasa a un segundo plano, pudiendo ser éste parte del desarrollo o registro de una práctica pero no necesariamente tiene un fin en sí mismo, sino que se vuelve primordial el discurso y las relaciones que esta práctica establezca.
+
+      </div>
+      <div class="artists">
+        <h3>Artistas</h3>
+        <div class="artists-list">
+          {
+            artists.map((artist) => (
+              <div class="artist">
+                <h4>{artist.name}</h4>
+                <p class="role">{artist.role}</p>
+                <p class="bio">{artist.bio}</p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about {
+    padding: var(--spacing-xl) var(--spacing-lg);
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .about-container {
+    max-width: 1600px;
+    margin: 0 auto;
+  }
+
+  .about-container h2 {
+    font-size: 2.5rem;
+    margin-bottom: var(--spacing-xl);
+  }
+
+  .about-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-xl);
+  }
+
+  .about-text h3,
+  .artists h3 {
+    font-size: 1.25rem;
+    margin-bottom: var(--spacing-md);
+    font-weight: 600;
+  }
+
+  .about-text p {
+    font-size: 0.95rem;
+    color: var(--text-light);
+    margin-bottom: var(--spacing-md);
+    line-height: 1.8;
+  }
+
+  .artists-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+  }
+
+  .artist h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: var(--spacing-xs);
+  }
+
+  .role {
+    font-size: 0.85rem;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: var(--spacing-xs);
+  }
+
+  .bio {
+    font-size: 0.9rem;
+    color: var(--text-light);
+  }
+
+  @media (max-width: 768px) {
+    .about {
+      padding: var(--spacing-lg) var(--spacing-md);
+    }
+
+    .about-content {
+      grid-template-columns: 1fr;
+      gap: var(--spacing-lg);
+    }
+  }
+</style>

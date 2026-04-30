@@ -1,0 +1,162 @@
+---
+---
+
+<section id="contacto" class="contact">
+  <div class="contact-container">
+    <h2>Contacto</h2>
+    <div class="contact-content">
+      <div class="contact-info">
+        <h3>Información</h3>
+        <div class="info-item">
+          <span class="label">Ubicación</span>
+          <span class="value">Abya Yala</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Email</span>
+          <span class="value">elbondicolectivo@gmail.com</span>
+        </div>
+        <div class="info-item">
+          <span class="label">WhatsApp</span>
+          <span class="value">+54 381 123 4567</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Instagram</span>
+          <span class="value">@elbondicolectivo</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Horarios</span>
+          <span class="value">24 7</span>
+        </div>
+      </div>
+      <form class="contact-form">
+        <input type="text" placeholder="Nombre" required />
+        <input type="email" placeholder="Email" required />
+        <input type="text" placeholder="Asunto" required />
+        <textarea placeholder="Mensaje" rows="5" required></textarea>
+        <button type="submit">Enviar</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<script>
+  const form = document.querySelector('.contact-form');
+  if (form) {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const toast = document.createElement('div');
+      toast.style.cssText = `
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: #000;
+        color: white;
+        padding: 1rem 1.5rem;
+        border-radius: 4px;
+        font-size: 0.9rem;
+        z-index: 2000;
+      `;
+      toast.textContent = '¡Mensaje enviado!';
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 3000);
+      form.reset();
+    });
+  }
+</script>
+
+<style>
+  .contact {
+    padding: var(--spacing-xl) var(--spacing-lg);
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .contact-container {
+    max-width: 1600px;
+    margin: 0 auto;
+  }
+
+  .contact-container h2 {
+    font-size: 2.5rem;
+    margin-bottom: var(--spacing-xl);
+  }
+
+  .contact-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-xl);
+  }
+
+  .contact-info h3 {
+    font-size: 1.25rem;
+    margin-bottom: var(--spacing-lg);
+    font-weight: 600;
+  }
+
+  .info-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .label {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-light);
+    font-weight: 600;
+  }
+
+  .value {
+    font-size: 0.95rem;
+    color: var(--text);
+  }
+
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+
+  input,
+  textarea {
+    border: 1px solid var(--border-color);
+    padding: var(--spacing-md);
+    font-size: 0.95rem;
+    border-radius: 4px;
+    background: transparent;
+    transition: border-color 0.3s;
+  }
+
+  input:focus,
+  textarea:focus {
+    outline: none;
+    border-color: var(--text);
+  }
+
+  button[type='submit'] {
+    border: 1px solid var(--text);
+    padding: var(--spacing-md);
+    background: var(--text);
+    color: var(--secondary);
+    font-weight: 600;
+    border-radius: 4px;
+    transition: all 0.3s;
+  }
+
+  button[type='submit']:hover {
+    background: var(--secondary);
+    color: var(--text);
+  }
+
+  @media (max-width: 768px) {
+    .contact {
+      padding: var(--spacing-lg) var(--spacing-md);
+    }
+
+    .contact-content {
+      grid-template-columns: 1fr;
+      gap: var(--spacing-lg);
+    }
+  }
+</style>

@@ -1,0 +1,104 @@
+---
+const writings = [
+  {
+    title: "La Abstracción como Lenguaje",
+    author: "Martín González",
+    text: "Explorar el arte abstracto significa liberar al espectador de las ataduras de la representación literal.",
+  },
+  {
+    title: "Escultura y Espacio",
+    author: "Laura Fernández",
+    text: "La escultura existe en la relación entre el espectador y el espacio que lo rodea.",
+  },
+  {
+    title: "La Fotografía como Testigo",
+    author: "Carlos Ruiz",
+    text: "Cada disparo es una afirmación sobre qué merece ser visto, recordado y valorado.",
+  },
+  {
+    title: "Tecnología y Emoción",
+    author: "Ana Morales",
+    text: "El arte digital accede a emociones humanas profundas mediante herramientas contemporáneas.",
+  },
+];
+---
+
+<section id="escritos" class="writings">
+  <div class="writings-container">
+    <h2>Escritos</h2>
+    <div class="writings-grid">
+      {
+        writings.map((writing) => (
+          <article class="writing">
+            <h3>{writing.title}</h3>
+            <p class="author">Por {writing.author}</p>
+            <p class="text">{writing.text}</p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .writings {
+    padding: var(--spacing-xl) var(--spacing-lg);
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .writings-container {
+    max-width: 1600px;
+    margin: 0 auto;
+  }
+
+  .writings-container h2 {
+    font-size: 2.5rem;
+    margin-bottom: var(--spacing-xl);
+  }
+
+  .writings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: var(--spacing-lg);
+  }
+
+  .writing {
+    padding: var(--spacing-lg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    transition: border-color 0.3s;
+  }
+
+  .writing:hover {
+    border-color: var(--text);
+  }
+
+  .writing h3 {
+    font-size: 1.1rem;
+    margin-bottom: var(--spacing-sm);
+    font-weight: 600;
+  }
+
+  .author {
+    font-size: 0.85rem;
+    color: var(--text-light);
+    margin-bottom: var(--spacing-md);
+    font-weight: 500;
+  }
+
+  .text {
+    font-size: 0.95rem;
+    color: var(--text-light);
+    line-height: 1.8;
+  }
+
+  @media (max-width: 768px) {
+    .writings {
+      padding: var(--spacing-lg) var(--spacing-md);
+    }
+
+    .writings-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
