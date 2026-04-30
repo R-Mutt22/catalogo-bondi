@@ -1,104 +1,46 @@
 ---
+import artworksData from '../data/artworks.json';
+
 interface Artwork {
   id: number;
   title: string;
   artist: string;
   category: string;
   price: string;
+  image: string;
+  thumbnail: string;
   description: string;
+  availability: string;
+  featured: boolean;
 }
 
-const artworks: Artwork[] = [
-  {
-    id: 1,
-    title: "Confluencias Urbanas",
-    artist: "El Bondi Colectivo",
-    category: "pintura",
-    price: "$45,000",
-    description: "Exploración de líneas urbanas",
-  },
-  {
-    id: 2,
-    title: "Geometrías del Alma",
-    artist: "El Bondi Colectivo",
-    category: "pintura",
-    price: "$38,000",
-    description: "Formas geométricas abstractas",
-  },
-  {
-    id: 3,
-    title: "Equilibrio Suspendido",
-    artist: "El Bondi Colectivo",
-    category: "escultura",
-    price: "$52,000",
-    description: "Escultura en bronce",
-  },
-  {
-    id: 4,
-    title: "Transformaciones",
-    artist: "El Bondi Colectivo",
-    category: "escultura",
-    price: "$48,000",
-    description: "Serie de mutación",
-  },
-  {
-    id: 5,
-    title: "Instantes Cotidianos",
-    artist: "El Bondi Colectivo",
-    category: "fotografia",
-    price: "$12,000",
-    description: "Fotografía documental",
-  },
-  {
-    id: 6,
-    title: "Luz y Sombra",
-    artist: "El Bondi Colectivo",
-    category: "fotografia",
-    price: "$15,000",
-    description: "Juego de contrastes",
-  },
-  {
-    id: 7,
-    title: "Realidad Aumentada #1",
-    artist: "El Bondi Colectivo",
-    category: "digital",
-    price: "$28,000",
-    description: "Experiencia inmersiva",
-  },
-  {
-    id: 8,
-    title: "Sintaxis Emocional",
-    artist: "El Bondi Colectivo",
-    category: "digital",
-    price: "$32,000",
-    description: "Arte digital",
-  },
-  {
-    id: 9,
-    title: "Fragmentos de Tiempo",
-    artist: "Martín González",
-    category: "pintura",
-    price: "$42,000",
-    description: "Reflexión temporal",
-  },
-];
+const artworks: Artwork[] = artworksData.artworks;
+const featured = artworks.filter(a => a.featured);
 ---
 
 <section id="catalogo" class="gallery">
   <div class="gallery-container">
+    <!-- HEADER CON CONTROLES -->
     <div class="gallery-header">
       <div>
         <h2>Piezas</h2>
+        <p class="subtitle">{artworks.length} obras disponibles</p>
       </div>
       <div class="gallery-controls">
-        <span class="sort-btn">Sort</span>
-        <span class="shuffle-btn">Shuffle</span>
-        <input type="text" class="search-input" placeholder="Search" />
+        <button class="control-btn sort-btn" title="Ordenar">Sort</button>
+        <button class="control-btn shuffle-btn" title="Aleatorio">Shuffle</button>
+        <input 
+          type="text" 
+          class="search-input" 
+          placeholder="Buscar obras..." 
+          id="search-input"
+        />
         <span class="count">{artworks.length}</span>
       </div>
     </div>
 
-    <div class="filters">
+    <!-- FILTROS MEJORADOS -->
+    <div class="filters-section">
       <button class="filter-btn active" data-filter="todos">Todos</button>
       <button class="filter-btn" data-filter="pintura">Pintura</button>
       <button class="filter-btn" data-filter="escultura">Escultura</button>
@@ -106,61 +48,133 @@ const artworks: Artwork[] = [
       <button class="filter-btn" data-filter="digital">Digital</button>
     </div>
 
-    <div class="gallery-grid">
+    <!-- OBRAS DESTACADAS -->
+    {featured.length > 0 && (
+      <div class="featured-section">
+        <h3>Destacadas</h3>
+        <div class="featured-grid">
+          {featured.map((artwork) => (
+            <a href={`/obra/${artwork.id}`} class="featured-item">
+              <div class="featured-image">
+                <img 
+                  src={artwork.image} 
+                  alt={artwork.title}
+                  loading="lazy"
+                />
+                <span class="badge">{artwork.category}</span>
+              </div>
+              <h4>{artwork.title}</h4>
+              <p class="artist">{artwork.artist}</p>
+              <p class="price">{artwork.price}</p>
+            </a>
+          ))}
+        </div>
+      </div>
+    )}
+
+    <!-- GALERÍA PRINCIPAL -->
+    <div class="gallery-grid" id="gallery-grid">
       {artworks.map((artwork) => (
-        <div class="artwork-item" data-category={artwork.category}>
+        <a 
+          href={`/obra/${artwork.id}`}
+          class="artwork-item" 
+          data-category={artwork.category}
+          data-title={artwork.title.toLowerCase()}
+        >
           <div class="artwork-image-container">
-            <div class="artwork-image">{artwork.title}</div>
+            <img 
+              src={artwork.thumbnail || artwork.image} 
+              alt={artwork.title}
+              loading="lazy"
+            />
             <div class="overlay">
-              <button class="like-btn" data-id={artwork.id}>
+              <button 
+                class="like-btn" 
+                data-id={artwork.id}
+                onclick="event.preventDefault(); toggleLike(this);"
+              >
                 <span class="heart">🤍</span>
               </button>
               <div class="share-container">
-                <button class="share-btn">📤</button>
+                <button 
+                  class="share-btn"
+                  onclick="event.preventDefault(); toggleShare(this);"
+                >
+                  📤
+                </button>
                 <div class="share-menu">
-                  <a
+                  <a 
                     class="share-option"
-                    href={`https://wa.me/?text=Mira: "${artwork.title}" de ${artwork.artist}`}
+                    href={`https://wa.me/?text=${encodeURIComponent(`Mira: "${artwork.title}" de ${artwork.artist} - El Bondi Colectivo 🎨`)}`}
                     target="_blank"
                   >
                     WhatsApp
                   </a>
-                  <a class="share-option" href="https://instagram.com" target="_blank">Instagram</a>
+                  <a class="share-option" href="https://instagram.com/elbondicolectivo" target="_blank">
+                    Instagram
+                  </a>
                   <a class="share-option" href="https://facebook.com" target="_blank">Facebook</a>
-                  <a class="share-option" href="https://twitter.com" target="_blank">Twitter</a>
+                  <a 
+                    class="share-option"
+                    href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`Descubrí "${artwork.title}" de El Bondi Colectivo 🎨`)}`}
+                    target="_blank"
+                  >
+                    Twitter
+                  </a>
                   <a class="share-option" href="https://linkedin.com" target="_blank">LinkedIn</a>
                   <a
                     class="share-option"
-                    href={`mailto:?subject=${artwork.title}&body=${artwork.artist}`}
+                    href={`mailto:?subject=${encodeURIComponent(artwork.title)}&body=${encodeURIComponent(artwork.description)}`}
                   >
                     Email
                   </a>
                 </div>
               </div>
             </div>
+            <span class="availability-badge">{artwork.availability}</span>
           </div>
           <div class="artwork-info">
             <h3>{artwork.title}</h3>
             <p class="artist">{artwork.artist}</p>
+            <p class="description">{artwork.description}</p>
             <p class="price">{artwork.price}</p>
           </div>
-        </div>
+        </a>
       ))}
     </div>
   </div>
 </section>
 
 <script>
-  // Filtros
-  const filterButtons = document.querySelectorAll('.filter-btn');
+  // Búsqueda
+  const searchInput = document.getElementById('search-input');
   const artworkItems = document.querySelectorAll('.artwork-item');
 
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      const searchTerm = e.target.value.toLowerCase();
+      
+      artworkItems.forEach(item => {
+        const title = item.dataset.title;
+        if (title.includes(searchTerm) || searchTerm === '') {
+          item.style.display = 'block';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    });
+  }
+
+  // Filtros
+  const filterButtons = document.querySelectorAll('.filter-btn');
+  
   filterButtons.forEach(button => {
     button.addEventListener('click', () => {
       filterButtons.forEach(btn => btn.classList.remove('active'));
       button.classList.add('active');
-
+      
       const filter = button.dataset.filter;
+      
       artworkItems.forEach(item => {
         if (filter === 'todos' || item.dataset.category === filter) {
           item.style.display = 'block';
@@ -172,35 +186,94 @@ const artworks: Artwork[] = [
   });
 
   // Me gusta
-  const likeButtons = document.querySelectorAll('.like-btn');
-  likeButtons.forEach(button => {
-    button.addEventListener('click', () => {
-      button.classList.toggle('liked');
-      const heart = button.querySelector('.heart');
-      if (button.classList.contains('liked')) {
-        heart.textContent = '❤️';
-      } else {
-        heart.textContent = '🤍';
-      }
-    });
-  });
+  function toggleLike(btn) {
+    btn.classList.toggle('liked');
+    const heart = btn.querySelector('.heart');
+    
+    if (btn.classList.contains('liked')) {
+      heart.textContent = '❤️';
+      showToast('¡Obra guardada en tu colección!');
+      localStorage.setItem(`liked-${btn.dataset.id}`, 'true');
+    } else {
+      heart.textContent = '🤍';
+      localStorage.removeItem(`liked-${btn.dataset.id}`);
+    }
+  }
 
   // Compartir
-  const shareButtons = document.querySelectorAll('.share-btn');
-  shareButtons.forEach(button => {
-    button.addEventListener('click', () => {
-      const menu = button.parentElement.querySelector('.share-menu');
-      document.querySelectorAll('.share-menu').forEach(m => {
-        if (m !== menu) m.classList.remove('active');
-      });
-      menu.classList.toggle('active');
+  function toggleShare(btn) {
+    const menu = btn.parentElement.querySelector('.share-menu');
+    document.querySelectorAll('.share-menu').forEach(m => {
+      if (m !== menu) m.classList.remove('active');
     });
-  });
+    menu.classList.toggle('active');
+  }
 
   document.addEventListener('click', (e) => {
     if (!e.target.closest('.share-container')) {
       document.querySelectorAll('.share-menu').forEach(m => m.classList.remove('active'));
     }
+  });
+
+  // Toast
+  function showToast(message) {
+    const toast = document.createElement('div');
+    toast.style.cssText = `
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #000;
+      color: white;
+      padding: 1rem 1.5rem;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      z-index: 2000;
+      animation: slideIn 0.3s ease;
+    `;
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 3000);
+  }
+
+  // Cargar likes guardados
+  const likeButtons = document.querySelectorAll('.like-btn');
+  likeButtons.forEach(btn => {
+    if (localStorage.getItem(`liked-${btn.dataset.id}`)) {
+      btn.classList.add('liked');
+      btn.querySelector('.heart').textContent = '❤️';
+    }
+  });
+
+  // Shuffle
+  document.querySelector('.shuffle-btn').addEventListener('click', () => {
+    const items = Array.from(artworkItems);
+    const grid = document.getElementById('gallery-grid');
+    
+    for (let i = items.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [items[i], items[j]] = [items[j], items[i]];
+    }
+    
+    grid.innerHTML = '';
+    items.forEach(item => grid.appendChild(item));
+  });
+
+  // Sort
+  let sortOrder = 'asc';
+  document.querySelector('.sort-btn').addEventListener('click', () => {
+    const items = Array.from(artworkItems);
+    const grid = document.getElementById('gallery-grid');
+    
+    items.sort((a, b) => {
+      const priceA = parseInt(a.querySelector('.price').textContent);
+      const priceB = parseInt(b.querySelector('.price').textContent);
+      
+      return sortOrder === 'asc' ? priceA - priceB : priceB - priceA;
+    });
+    
+    sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+    grid.innerHTML = '';
+    items.forEach(item => grid.appendChild(item));
   });
 </script>
 
@@ -218,12 +291,19 @@ const artworks: Artwork[] = [
   .gallery-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin-bottom: var(--spacing-lg);
+    align-items: flex-start;
+    margin-bottom: var(--spacing-xl);
+    gap: var(--spacing-lg);
   }
 
   .gallery-header h2 {
     font-size: 2.5rem;
+    margin: 0 0 var(--spacing-xs) 0;
+  }
+
+  .subtitle {
+    font-size: 0.9rem;
+    color: var(--text-light);
     margin: 0;
   }
 
@@ -231,18 +311,21 @@ const artworks: Artwork[] = [
     display: flex;
     gap: var(--spacing-lg);
     align-items: center;
+    flex-wrap: wrap;
+    justify-content: flex-end;
   }
 
-  .sort-btn,
-  .shuffle-btn {
+  .control-btn {
+    background: none;
+    border: none;
     font-size: 0.95rem;
     color: var(--text-light);
     cursor: pointer;
     transition: color 0.3s;
+    font-weight: 500;
   }
 
-  .sort-btn:hover,
-  .shuffle-btn:hover {
+  .control-btn:hover {
     color: var(--text);
   }
 
@@ -252,14 +335,21 @@ const artworks: Artwork[] = [
     font-size: 0.95rem;
     border-radius: 4px;
     background: transparent;
+    color: var(--text);
+    min-width: 250px;
+  }
+
+  .search-input::placeholder {
+    color: var(--text-light);
   }
 
   .count {
     font-size: 1.5rem;
     font-weight: 600;
+    color: var(--text);
   }
 
-  .filters {
+  .filters-section {
     display: flex;
     gap: var(--spacing-md);
     margin-bottom: var(--spacing-xl);
@@ -270,9 +360,12 @@ const artworks: Artwork[] = [
     border: 1px solid var(--border-color);
     padding: var(--spacing-sm) var(--spacing-md);
     background: transparent;
+    color: var(--text);
     font-size: 0.9rem;
+    cursor: pointer;
     transition: all 0.3s;
     border-radius: 4px;
+    font-weight: 500;
   }
 
   .filter-btn:hover {
@@ -285,6 +378,79 @@ const artworks: Artwork[] = [
     border-color: var(--text);
   }
 
+  .featured-section {
+    margin-bottom: var(--spacing-xl);
+    padding-bottom: var(--spacing-xl);
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .featured-section h3 {
+    font-size: 1.25rem;
+    margin-bottom: var(--spacing-lg);
+    font-weight: 600;
+  }
+
+  .featured-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--spacing-lg);
+  }
+
+  .featured-item {
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.3s;
+  }
+
+  .featured-item:hover {
+    transform: translateY(-4px);
+  }
+
+  .featured-image {
+    position: relative;
+    aspect-ratio: 1;
+    overflow: hidden;
+    border-radius: 8px;
+    margin-bottom: var(--spacing-md);
+  }
+
+  .featured-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .badge {
+    position: absolute;
+    top: var(--spacing-md);
+    right: var(--spacing-md);
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: 4px;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .featured-item h4 {
+    font-size: 1.1rem;
+    margin-bottom: var(--spacing-xs);
+    font-weight: 600;
+  }
+
+  .featured-item .artist {
+    font-size: 0.85rem;
+    color: var(--text-light);
+    margin-bottom: var(--spacing-xs);
+  }
+
+  .featured-item .price {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text);
+  }
+
   .gallery-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -292,7 +458,15 @@ const artworks: Artwork[] = [
   }
 
   .artwork-item {
+    text-decoration: none;
+    color: inherit;
     cursor: pointer;
+    display: block;
+    transition: all 0.3s;
+  }
+
+  .artwork-item:hover {
+    transform: translateY(-2px);
   }
 
   .artwork-image-container {
@@ -305,20 +479,19 @@ const artworks: Artwork[] = [
     transition: background 0.3s;
   }
 
-  .artwork-image-container:hover {
-    background: #efefef;
-  }
-
-  .artwork-image {
+  .artwork-image-container img {
     width: 100%;
     height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.8rem;
-    color: var(--text-light);
-    text-align: center;
-    padding: var(--spacing-md);
+    object-fit: cover;
+    transition: transform 0.3s;
+  }
+
+  .artwork-item:hover .artwork-image-container img {
+    transform: scale(1.05);
+  }
+
+  .artwork-image-container:hover {
+    background: #efefef;
   }
 
   .overlay {
@@ -333,6 +506,7 @@ const artworks: Artwork[] = [
     justify-content: flex-end;
     opacity: 0;
     transition: opacity 0.3s;
+    background: rgba(0, 0, 0, 0.1);
   }
 
   .artwork-image-container:hover .overlay {
@@ -345,11 +519,12 @@ const artworks: Artwork[] = [
     height: 40px;
     border: 1px solid rgba(0, 0, 0, 0.2);
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.95);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 1.2rem;
+    cursor: pointer;
     transition: all 0.3s;
   }
 
@@ -362,7 +537,6 @@ const artworks: Artwork[] = [
   .like-btn.liked {
     background: #ff6b6b;
     border-color: #ff6b6b;
-    color: white;
   }
 
   .share-container {
@@ -392,11 +566,25 @@ const artworks: Artwork[] = [
     padding: var(--spacing-sm) var(--spacing-md);
     font-size: 0.85rem;
     color: var(--text);
+    text-decoration: none;
     transition: background 0.2s;
   }
 
   .share-option:hover {
     background: #f5f5f5;
+  }
+
+  .availability-badge {
+    position: absolute;
+    bottom: var(--spacing-md);
+    left: var(--spacing-md);
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: 4px;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
   }
 
   .artwork-info {
@@ -409,16 +597,26 @@ const artworks: Artwork[] = [
     font-weight: 600;
   }
 
-  .artist {
-    font-size: 0.9rem;
+  .artwork-info .artist {
+    font-size: 0.85rem;
     color: var(--text-light);
     margin-bottom: var(--spacing-xs);
   }
 
-  .price {
+  .artwork-info .description {
     font-size: 0.85rem;
     color: var(--text-light);
-    font-weight: 500;
+    margin-bottom: var(--spacing-xs);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .artwork-info .price {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text);
   }
 
   @media (max-width: 768px) {
@@ -429,17 +627,25 @@ const artworks: Artwork[] = [
     .gallery-header {
       flex-direction: column;
       align-items: flex-start;
-      gap: var(--spacing-lg);
     }
 
     .gallery-controls {
       width: 100%;
-      flex-wrap: wrap;
+      justify-content: flex-start;
+    }
+
+    .search-input {
+      min-width: auto;
+      flex: 1;
     }
 
     .gallery-grid {
       grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
       gap: var(--spacing-md);
+    }
+
+    .featured-grid {
+      grid-template-columns: 1fr;
     }
   }
 </style>

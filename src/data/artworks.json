@@ -1,0 +1,55 @@
+{
+  "artworks": [
+    {
+      "id": 1,
+      "title": "Confluencias Urbanas",
+      "artist": "El Bondi Colectivo",
+      "category": "pintura",
+      "price": "$45,000",
+      "image": "/images/artworks/01-confluencias-urbanas.jpg",
+      "thumbnail": "/images/artworks/01-confluencias-urbanas-thumb.jpg",
+      "description": "Exploración de las líneas que convergen en espacios urbanos.",
+      "longDescription": "Una obra que examina profundamente cómo las líneas y geometrías urbanas convergen y se entrelazan. Esta pintura abstracta explora la relación entre la arquitectura moderna y la emoción humana.",
+      "dimensions": "120cm x 150cm",
+      "year": 2023,
+      "medium": "Óleo sobre lienzo",
+      "availability": "Disponible",
+      "featured": true,
+      "tags": ["abstracto", "urbano", "colorido"]
+    },
+    {
+      "id": 2,
+      "title": "Geometrías del Alma",
+      "artist": "El Bondi Colectivo",
+      "category": "pintura",
+      "price": "$38,000",
+      "image": "/images/artworks/02-geometrias-alma.jpg",
+      "thumbnail": "/images/artworks/02-geometrias-alma-thumb.jpg",
+      "description": "Expresión abstracta de emociones complejas mediante formas geométricas.",
+      "longDescription": "Una exploración de cómo las emociones pueden ser traducidas a formas geométricas puras. Cada línea y color representa un estado emocional diferente.",
+      "dimensions": "100cm x 100cm",
+      "year": 2023,
+      "medium": "Acrílico sobre lienzo",
+      "availability": "Disponible",
+      "featured": false,
+      "tags": ["geométrico", "emocional", "minimalista"]
+    },
+    {
+      "id": 3,
+      "title": "Equilibrio Suspendido",
+      "artist": "El Bondi Colectivo",
+      "category": "escultura",
+      "price": "$52,000",
+      "image": "/images/artworks/03-equilibrio-suspendido.jpg",
+      "thumbnail": "/images/artworks/03-equilibrio-suspendido-thumb.jpg",
+      "description": "Escultura en bronce que desafía la percepción del peso y la gravedad.",
+      "longDescription": "Una escultura que juega con la gravedad y el equilibrio. Realizada en bronce, parece estar suspendida en el aire, desafiando las leyes de la física.",
+      "dimensions": "80cm (altura)",
+      "year": 2022,
+      "medium": "Bronce",
+      "availability": "Vendido",
+      "featured": true,
+      "tags": ["escultura", "bronce", "minimalista"]
+    }
+  ]
+}
