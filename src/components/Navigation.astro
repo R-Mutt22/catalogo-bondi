@@ -4,14 +4,18 @@
 <nav class="nav">
   <div class="nav-container">
     <div class="nav-left">
-      <h1 class="logo">El Bondi</h1>
-      <h2 class="logo-subtitle">Colectivo</h2>
+      <a href="/" class="logo">
+        <span class="logo-main">El Bondi</span>
+        <span class="logo-sub">Colectivo</span>
+      </a>
     </div>
     <ul class="nav-links">
-      <li><a href="#catalogo">Catálogo</a></li>
-      <li><a href="#acerca">Acerca de</a></li>
-      <li><a href="#escritos">Escritos</a></li>
-      <li><a href="#contacto">Contacto</a></li>
+      <li><a href="/">Obras</a></li>
+      <li><a href="/artistas/">Artistas</a></li>
+      <li><a href="/releases/">Releases</a></li>
+      <li><a href="/historial/">Historial</a></li>
+      <li><a href="/tienda/">Tienda</a></li>
+      <li><a href="/contacto/">Contacto</a></li>
     </ul>
   </div>
 </nav>
@@ -19,7 +23,7 @@
 <style>
   .nav {
     border-bottom: 1px solid var(--border-color);
-    padding: var(--spacing-xl) var(--spacing-lg);
+    padding: var(--spacing-lg) var(--spacing-lg);
     position: sticky;
     top: 0;
     background: var(--secondary);
@@ -31,26 +35,39 @@
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: center;
     gap: var(--spacing-xl);
   }
 
   .nav-left {
     display: flex;
-    gap: var(--spacing-md);
-    align-items: baseline;
+    align-items: center;
   }
 
   .logo {
-    font-size: 1.25rem;
-    font-weight: 700;
-    letter-spacing: -0.02em;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    cursor: pointer;
+    transition: opacity 0.3s;
   }
 
-  .logo-subtitle {
+  .logo:hover {
+    opacity: 0.7;
+  }
+
+  .logo-main {
     font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+
+  .logo-sub {
+    font-size: 0.8rem;
     font-weight: 400;
     color: var(--text-light);
+    letter-spacing: -0.02em;
   }
 
   .nav-links {
@@ -61,7 +78,7 @@
   }
 
   .nav-links a {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     font-weight: 500;
     color: var(--text-light);
     transition: color 0.3s;
@@ -72,23 +89,25 @@
     color: var(--text);
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 968px) {
     .nav {
       padding: var(--spacing-lg) var(--spacing-md);
     }
 
     .nav-container {
-      flex-direction: column;
       gap: var(--spacing-lg);
+      flex-wrap: wrap;
     }
 
     .nav-links {
       gap: var(--spacing-lg);
       font-size: 0.85rem;
+      width: 100%;
+      flex-wrap: wrap;
     }
 
-    .logo {
-      font-size: 1rem;
+    .logo-main {
+      font-size: 0.9rem;
     }
   }
 </style>

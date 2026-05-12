@@ -3,63 +3,85 @@
 
 <section id="contacto" class="contact">
   <div class="contact-container">
-    <h2>Contacto</h2>
+    <h2>Ponte en <span>Contacto</span></h2>
     <div class="contact-content">
       <div class="contact-info">
-        <h3>Información</h3>
-        <div class="info-item">
-          <span class="label">Ubicación</span>
-          <span class="value">Abya Yala</span>
+        <div class="contact-item">
+          <div class="contact-label">📍 Ubicación</div>
+          <div class="contact-value">Rosario, Santa Fe, Argentina</div>
         </div>
-        <div class="info-item">
-          <span class="label">Email</span>
-          <span class="value">elbondicolectivo@gmail.com</span>
+        <div class="contact-item">
+          <div class="contact-label">📧 Email</div>
+          <div class="contact-value">info@elbondicolectivo.com</div>
         </div>
-        <div class="info-item">
-          <span class="label">WhatsApp</span>
-          <span class="value">+54 381 123 4567</span>
+        <div class="contact-item">
+          <div class="contact-label">📱 WhatsApp</div>
+          <div class="contact-value">+54 341 123 4567</div>
         </div>
-        <div class="info-item">
-          <span class="label">Instagram</span>
-          <span class="value">@elbondicolectivo</span>
+        <div class="contact-item">
+          <div class="contact-label">🔗 Redes Sociales</div>
+          <div class="contact-value">
+            @elbondicolectivo en Instagram<br />
+            @elbondicolectivo en Facebook<br />
+            @elbondicolectivo en Twitter
+          </div>
         </div>
-        <div class="info-item">
-          <span class="label">Horarios</span>
-          <span class="value">24 7</span>
+        <div class="contact-item">
+          <div class="contact-label">🕐 Horarios de Atención</div>
+          <div class="contact-value">
+            Lunes a Viernes: 10:00 - 18:00<br />
+            Sábados: 12:00 - 17:00<br />
+            Domingos: Cerrado
+          </div>
         </div>
       </div>
-      <form class="contact-form">
-        <input type="text" placeholder="Nombre" required />
-        <input type="email" placeholder="Email" required />
-        <input type="text" placeholder="Asunto" required />
-        <textarea placeholder="Mensaje" rows="5" required></textarea>
-        <button type="submit">Enviar</button>
+      <form class="contact-form" id="contact-form">
+        <div class="form-group">
+          <label class="form-label">Nombre</label>
+          <input type="text" class="form-input" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-input" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Asunto</label>
+          <input type="text" class="form-input" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Mensaje</label>
+          <textarea class="form-textarea" required></textarea>
+        </div>
+        <button type="submit" class="submit-btn">Enviar Mensaje</button>
       </form>
     </div>
   </div>
 </section>
 
 <script>
-  const form = document.querySelector('.contact-form');
+  // ✅ CORRECCIÓN: Casteamos el form correctamente
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+
   if (form) {
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', (e: Event) => {
       e.preventDefault();
+      
+      // ✅ Mostramos el toast
       const toast = document.createElement('div');
-      toast.style.cssText = `
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background: #000;
-        color: white;
-        padding: 1rem 1.5rem;
-        border-radius: 4px;
-        font-size: 0.9rem;
-        z-index: 2000;
-      `;
-      toast.textContent = '¡Mensaje enviado!';
+      toast.className = 'toast';
+      toast.textContent = '¡Mensaje enviado! Nos pondremos en contacto pronto.';
       document.body.appendChild(toast);
+      
+      // ✅ Limpiar el formulario
+      const inputs = form.querySelectorAll('input, textarea');
+      inputs.forEach((input) => {
+        if (input instanceof HTMLInputElement || input instanceof HTMLTextAreaElement) {
+          input.value = '';
+        }
+      });
+      
+      // Remover toast después de 3 segundos
       setTimeout(() => toast.remove(), 3000);
-      form.reset();
     });
   }
 </script>
@@ -71,7 +93,7 @@
   }
 
   .contact-container {
-    max-width: 1600px;
+    max-width: 1400px;
     margin: 0 auto;
   }
 
@@ -80,73 +102,106 @@
     margin-bottom: var(--spacing-xl);
   }
 
+  .contact-container h2 span {
+    color: var(--accent);
+  }
+
   .contact-content {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: var(--spacing-xl);
+    margin-top: var(--spacing-xl);
   }
 
-  .contact-info h3 {
-    font-size: 1.25rem;
-    margin-bottom: var(--spacing-lg);
-    font-weight: 600;
+  .contact-info {
+    background: var(--bg-light);
+    padding: var(--spacing-lg);
+    border-radius: 8px;
   }
 
-  .info-item {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-xs);
+  .contact-item {
     margin-bottom: var(--spacing-lg);
   }
 
-  .label {
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--text-light);
-    font-weight: 600;
+  .contact-label {
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: var(--spacing-xs);
+    font-size: 0.9rem;
   }
 
-  .value {
+  .contact-value {
+    color: var(--text-secondary);
     font-size: 0.95rem;
-    color: var(--text);
+    word-break: break-word;
   }
 
   .contact-form {
+    background: white;
+    padding: var(--spacing-lg);
+    border-radius: 8px;
+    box-shadow: var(--shadow-subtle);
     display: flex;
     flex-direction: column;
     gap: var(--spacing-md);
   }
 
-  input,
-  textarea {
-    border: 1px solid var(--border-color);
-    padding: var(--spacing-md);
-    font-size: 0.95rem;
-    border-radius: 4px;
-    background: transparent;
-    transition: border-color 0.3s;
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
   }
 
-  input:focus,
-  textarea:focus {
-    outline: none;
-    border-color: var(--text);
-  }
-
-  button[type='submit'] {
-    border: 1px solid var(--text);
-    padding: var(--spacing-md);
-    background: var(--text);
-    color: var(--secondary);
+  .form-label {
+    display: block;
+    margin-bottom: var(--spacing-xs);
     font-weight: 600;
-    border-radius: 4px;
-    transition: all 0.3s;
+    color: var(--primary);
+    font-size: 0.9rem;
   }
 
-  button[type='submit']:hover {
-    background: var(--secondary);
-    color: var(--text);
+  .form-input,
+  .form-textarea {
+    width: 100%;
+    padding: var(--spacing-md);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    transition: border-color 0.3s;
+    background: transparent;
+    color: var(--text-primary);
+  }
+
+  .form-input:focus,
+  .form-textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.05);
+  }
+
+  .form-textarea {
+    resize: vertical;
+    min-height: 120px;
+  }
+
+  .submit-btn {
+    background: var(--primary);
+    color: white;
+    padding: var(--spacing-md);
+    border: none;
+    border-radius: 4px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+    margin-top: var(--spacing-md);
+  }
+
+  .submit-btn:hover {
+    opacity: 0.8;
+    transform: translateY(-2px);
   }
 
   @media (max-width: 768px) {
@@ -154,9 +209,39 @@
       padding: var(--spacing-lg) var(--spacing-md);
     }
 
+    .contact-container h2 {
+      font-size: 1.8rem;
+    }
+
     .contact-content {
       grid-template-columns: 1fr;
       gap: var(--spacing-lg);
+    }
+  }
+</style>
+
+<style is:global>
+  .toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--primary);
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 4px;
+    box-shadow: var(--shadow-medium);
+    z-index: 2000;
+    animation: slideIn 0.3s ease;
+  }
+
+  @keyframes slideIn {
+    from {
+      transform: translateX(400px);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
     }
   }
 </style>

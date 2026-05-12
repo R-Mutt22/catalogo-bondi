@@ -3,7 +3,11 @@
   --secondary: #ffffff;
   --text: #1a1a1a;
   --text-light: #666666;
+  --text-lighter: #999999;
   --border-color: #e5e5e5;
+  --bg-light: #fafafa;
+  --accent: #000;
+  
   --spacing-xs: 0.25rem;
   --spacing-sm: 0.5rem;
   --spacing-md: 1rem;
@@ -39,14 +43,11 @@ button {
   cursor: pointer;
 }
 
-input,
-textarea {
+input, textarea {
   font-family: inherit;
 }
 
-h1,
-h2,
-h3 {
+h1, h2, h3, h4 {
   font-weight: 700;
   line-height: 1.2;
 }

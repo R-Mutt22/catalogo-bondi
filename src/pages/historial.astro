@@ -1,0 +1,178 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navigation from '../components/Navigation.astro';
+import Footer from '../components/Footer.astro';
+
+const history = [
+  {
+    year: 2024,
+    title: "Expansión del Colectivo",
+    description: "Se suma Ana Morales al equipo con obras digitales innovadoras"
+  },
+  {
+    year: 2023,
+    title: "Primer Año Exitoso",
+    description: "El Bondi Colectivo se posiciona como referente en arte contemporáneo"
+  },
+  {
+    year: 2022,
+    title: "Fundación",
+    description: "Se funda El Bondi Colectivo con los trabajos de 3 artistas iniciales"
+  }
+];
+---
+
+<Layout title="Historial - El Bondi Colectivo">
+  <Navigation />
+  
+  <section class="history-section">
+    <div class="container">
+      <h1>Historial</h1>
+      <p class="subtitle">Nuestra trayectoria y evolución</p>
+      
+      <div class="timeline">
+        {history.map((item, index) => (
+          <div class="timeline-item" style={`--index: ${index}`}>
+            <div class="timeline-year">{item.year}</div>
+            <div class="timeline-content">
+              <h3>{item.title}</h3>
+              <p>{item.description}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</Layout>
+
+<style>
+  .history-section {
+    padding: var(--spacing-xl) var(--spacing-lg);
+    min-height: 60vh;
+  }
+
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  h1 {
+    margin-bottom: var(--spacing-md);
+  }
+
+  .subtitle {
+    font-size: 1.1rem;
+    color: var(--text-light);
+    margin-bottom: var(--spacing-xl);
+  }
+
+  .timeline {
+    position: relative;
+    padding: var(--spacing-xl) 0;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 100%;
+    background: var(--border-color);
+  }
+
+  .timeline-item {
+    margin-bottom: var(--spacing-xl);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-lg);
+    align-items: center;
+    position: relative;
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 12px;
+    height: 12px;
+    background: var(--text);
+    border-radius: 50%;
+    border: 3px solid white;
+    z-index: 10;
+    top: 0;
+  }
+
+  .timeline-item:nth-child(odd) .timeline-year {
+    text-align: right;
+    padding-right: var(--spacing-lg);
+    border-right: 2px solid var(--text);
+  }
+
+  .timeline-item:nth-child(even) .timeline-year {
+    text-align: left;
+    padding-left: var(--spacing-lg);
+    border-left: 2px solid var(--text);
+  }
+
+  .timeline-year {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .timeline-content {
+    padding: var(--spacing-lg);
+    background: var(--bg-light);
+    border-radius: 4px;
+  }
+
+  .timeline-content h3 {
+    font-size: 1.1rem;
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .timeline-content p {
+    color: var(--text-light);
+    font-size: 0.95rem;
+  }
+
+  @media (max-width: 768px) {
+    .history-section {
+      padding: var(--spacing-lg) var(--spacing-md);
+    }
+
+    h1 {
+      font-size: 2rem;
+    }
+
+    .timeline::before {
+      left: 0;
+    }
+
+    .timeline-item {
+      grid-template-columns: 100px 1fr;
+      gap: var(--spacing-md);
+    }
+
+    .timeline-item::before {
+      left: 0;
+    }
+
+    .timeline-item:nth-child(odd) .timeline-year,
+    .timeline-item:nth-child(even) .timeline-year {
+      text-align: left;
+      padding-left: var(--spacing-md);
+      padding-right: 0;
+      border: none;
+      border-left: 2px solid var(--text);
+    }
+
+    .timeline-content {
+      grid-column: 2;
+    }
+  }
+</style>

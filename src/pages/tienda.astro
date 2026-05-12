@@ -1,0 +1,42 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navigation from '../components/Navigation.astro';
+import Gallery from '../components/Gallery.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout title="Tienda - El Bondi Colectivo">
+  <Navigation />
+  
+  <section class="tienda-header">
+    <div class="container">
+      <h1>Tienda</h1>
+      <p>Compra obras directamente de nuestros artistas</p>
+    </div>
+  </section>
+
+  <Gallery />
+
+  <Footer />
+</Layout>
+
+<style>
+  .tienda-header {
+    padding: var(--spacing-xl) var(--spacing-lg);
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .container {
+    max-width: 1600px;
+    margin: 0 auto;
+  }
+
+  h1 {
+    margin-bottom: var(--spacing-md);
+  }
+
+  .container p {
+    font-size: 1.1rem;
+    color: var(--text-light);
+  }
+</style>
