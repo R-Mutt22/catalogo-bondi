@@ -16,17 +16,6 @@ interface Artwork {
 
 const artworks: Artwork[] = artworksData.artworks as Artwork[];
 const featured = artworks.filter(a => a.featured);
-
-// Importar imágenes dinámicamente
-const imageModules = import.meta.glob<{ default: ImageMetadata }>(
-  '/src/assets/images/artworks/*.jpg',
-  { eager: true }
-);
-
-const getImage = (filename: string) => {
-  const path = `/src/assets/images/artworks/${filename}.jpg`;
-  return imageModules[path]?.default?.src || null;
-};
 ---
 
 <section id="catalogo" class="gallery">
@@ -55,7 +44,7 @@ const getImage = (filename: string) => {
             <a href={`/obra/${artwork.id}`} class="featured-card">
               <div class="featured-image">
                 <img 
-                  src={getImage(artwork.imageFile)}
+                  src={`/images/artworks/${artwork.imageFile}.webp`}
                   alt={artwork.title}
                   loading="lazy"
                 />
@@ -82,7 +71,7 @@ const getImage = (filename: string) => {
         >
           <div class="artwork-image-container">
             <img 
-              src={getImage(artwork.thumbFile || artwork.imageFile)}
+              src={`/images/artworks/thumbnails/${artwork.thumbFile}.webp`}
               alt={artwork.title}
               loading="lazy"
             />
@@ -106,24 +95,46 @@ const getImage = (filename: string) => {
                     class="share-option"
                     href={`https://wa.me/?text=${encodeURIComponent(`Mira: "${artwork.title}" de ${artwork.artist}`)}`}
                     target="_blank"
+                    onclick="event.stopPropagation();"
                   >
                     WhatsApp
                   </a>
-                  <a class="share-option" href="https://instagram.com/elbondicolectivo" target="_blank">
+                  <a 
+                    class="share-option" 
+                    href="https://instagram.com/elbondicolectivo" 
+                    target="_blank"
+                    onclick="event.stopPropagation();"
+                  >
                     Instagram
                   </a>
-                  <a class="share-option" href="https://facebook.com" target="_blank">Facebook</a>
+                  <a 
+                    class="share-option" 
+                    href="https://facebook.com" 
+                    target="_blank"
+                    onclick="event.stopPropagation();"
+                  >
+                    Facebook
+                  </a>
                   <a 
                     class="share-option"
                     href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`"${artwork.title}" de ${artwork.artist}`)}`}
                     target="_blank"
+                    onclick="event.stopPropagation();"
                   >
                     Twitter
                   </a>
-                  <a class="share-option" href="https://linkedin.com" target="_blank">LinkedIn</a>
+                  <a 
+                    class="share-option" 
+                    href="https://linkedin.com" 
+                    target="_blank"
+                    onclick="event.stopPropagation();"
+                  >
+                    LinkedIn
+                  </a>
                   <a
                     class="share-option"
                     href={`mailto:?subject=${encodeURIComponent(artwork.title)}`}
+                    onclick="event.stopPropagation();"
                   >
                     Email
                   </a>
@@ -143,7 +154,7 @@ const getImage = (filename: string) => {
 </section>
 
 <script>
-  // ✅ CORRECCIÓN 1: Búsqueda con casteo correcto
+  // ✅ BÚSQUEDA
   const searchInput = document.getElementById('search-input') as HTMLInputElement | null;
   const artworkItems = document.querySelectorAll('.artwork-item');
 
@@ -166,7 +177,7 @@ const getImage = (filename: string) => {
     });
   }
 
-  // ✅ CORRECCIÓN 2: Me gusta con casteo correcto
+  // ✅ ME GUSTA
   function toggleLike(btn: HTMLElement) {
     const button = btn as HTMLButtonElement;
     button.classList.toggle('liked');
@@ -178,6 +189,7 @@ const getImage = (filename: string) => {
         const id = button.dataset.id;
         if (id) {
           localStorage.setItem(`liked-${id}`, 'true');
+          showToast(`¡Te encanta esta obra!`);
         }
       } else {
         heart.textContent = '🤍';
@@ -189,7 +201,7 @@ const getImage = (filename: string) => {
     }
   }
 
-  // ✅ CORRECCIÓN 3: Compartir con casteo correcto
+  // ✅ COMPARTIR
   function toggleShare(btn: HTMLElement) {
     const button = btn as HTMLButtonElement;
     const parent = button.parentElement;
@@ -209,6 +221,7 @@ const getImage = (filename: string) => {
     menu.classList.toggle('active');
   }
 
+  // ✅ CERRAR MENÚ
   document.addEventListener('click', (e: MouseEvent) => {
     const target = e.target as HTMLElement;
     if (!target.closest('.share-container')) {
@@ -219,7 +232,7 @@ const getImage = (filename: string) => {
     }
   });
 
-  // ✅ CORRECCIÓN 4: Cargar likes guardados
+  // ✅ CARGAR LIKES
   const likeButtons = document.querySelectorAll('.like-btn');
   likeButtons.forEach((btn) => {
     const button = btn as HTMLButtonElement;
@@ -233,7 +246,7 @@ const getImage = (filename: string) => {
     }
   });
 
-  // ✅ CORRECCIÓN 5: Shuffle
+  // ✅ SHUFFLE
   function shuffleArtworks() {
     const grid = document.getElementById('gallery-grid') as HTMLElement | null;
     if (!grid) return;
@@ -249,9 +262,11 @@ const getImage = (filename: string) => {
     items.forEach((item) => {
       grid.appendChild(item);
     });
+    
+    showToast('¡Orden aleatorio!');
   }
 
-  // ✅ CORRECCIÓN 6: Sort
+  // ✅ SORT
   let sortOrder = 'asc';
   function sortArtworks() {
     const grid = document.getElementById('gallery-grid') as HTMLElement | null;
@@ -261,10 +276,10 @@ const getImage = (filename: string) => {
     
     items.sort((a, b) => {
       const priceA = parseInt(
-        (a.querySelector('.price') as HTMLElement | null)?.textContent || '0'
+        (a.querySelector('.price') as HTMLElement | null)?.textContent?.replace(/\D/g, '') || '0'
       );
       const priceB = parseInt(
-        (b.querySelector('.price') as HTMLElement | null)?.textContent || '0'
+        (b.querySelector('.price') as HTMLElement | null)?.textContent?.replace(/\D/g, '') || '0'
       );
       
       return sortOrder === 'asc' ? priceA - priceB : priceB - priceA;
@@ -275,6 +290,25 @@ const getImage = (filename: string) => {
     items.forEach((item) => {
       grid.appendChild(item);
     });
+    
+    showToast(`Ordenado por precio ${sortOrder === 'asc' ? 'ascendente' : 'descendente'}`);
+  }
+
+  // ✅ TOAST
+  function showToast(message: string) {
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+      toast.classList.add('show');
+    }, 10);
+    
+    setTimeout(() => {
+      toast.classList.remove('show');
+      setTimeout(() => toast.remove(), 300);
+    }, 3000);
   }
 </script>
 
@@ -558,6 +592,34 @@ const getImage = (filename: string) => {
 
     .featured-grid {
       grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<!-- ✅ TOAST GLOBAL -->
+<style is:global>
+  .toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--primary, #000);
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 2000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .toast.show {
+    opacity: 1;
+  }
+
+  @media (max-width: 768px) {
+    .toast {
+      left: 10px;
+      right: 10px;
     }
   }
 </style>

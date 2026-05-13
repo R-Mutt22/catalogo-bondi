@@ -33,12 +33,12 @@ const nextArtwork = allArtworks[(currentIndex + 1) % allArtworks.length];
 const prevArtwork = allArtworks[(currentIndex - 1 + allArtworks.length) % allArtworks.length];
 
 const imageModules = import.meta.glob<{ default: ImageMetadata }>(
-  '/src/assets/images/artworks/*.jpg',
+  '/src/assets/images/artworks/*.webp',
   { eager: true }
 );
 
 const getImage = (filename: string) => {
-  const path = `/src/assets/images/artworks/${filename}.jpg`;
+  const path = `/src/assets/images/artworks/${filename}.webp`;
   return imageModules[path]?.default?.src || null;
 };
 ---
