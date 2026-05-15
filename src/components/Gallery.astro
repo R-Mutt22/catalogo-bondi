@@ -15,139 +15,107 @@ interface Artwork {
 }
 
 const artworks: Artwork[] = artworksData.artworks as Artwork[];
-const featured = artworks.filter(a => a.featured);
 ---
 
 <section id="catalogo" class="gallery">
   <div class="gallery-container">
-    <!-- HEADER -->
+    <!-- HEADER SIMPLE -->
     <div class="gallery-header">
-      <h2>Obras</h2>
+      <h1>Catálogo</h1>
       <div class="gallery-controls">
-        <button class="control-btn" onclick="sortArtworks()">Sort</button>
-        <button class="control-btn" onclick="shuffleArtworks()">Shuffle</button>
         <input 
           type="text" 
           class="search-input" 
-          placeholder="Buscar"
+          placeholder="Buscar obra..."
           id="search-input"
         />
-        <span class="count">{artworks.length}</span>
       </div>
     </div>
 
-    <!-- FEATURED SECTION -->
-    {featured.length > 0 && (
-      <div class="featured-section">
-        <div class="featured-grid">
-          {featured.slice(0, 3).map((artwork) => (
-            <a href={`/obra/${artwork.id}`} class="featured-card">
-              <div class="featured-image">
-                <img 
-                  src={`/images/artworks/${artwork.imageFile}.webp`}
-                  alt={artwork.title}
-                  loading="lazy"
-                />
-              </div>
-              <div class="featured-info">
-                <h3>{artwork.title}</h3>
-                <p class="artist">{artwork.artist}</p>
-              </div>
-            </a>
-          ))}
-        </div>
-      </div>
-    )}
-
-    <!-- GALERÍA PRINCIPAL -->
+    <!-- GALERÍA GRID LIMPIA -->
     <div class="gallery-grid" id="gallery-grid">
       {artworks.map((artwork) => (
-        <a 
-          href={`/obra/${artwork.id}`}
-          class="artwork-item" 
+        <div 
+          class="artwork-card" 
           data-category={artwork.category}
           data-title={artwork.title.toLowerCase()}
           data-artist={artwork.artist.toLowerCase()}
+          data-id={artwork.id}
         >
-          <div class="artwork-image-container">
-            <img 
-              src={`/images/artworks/thumbnails/${artwork.thumbFile}.webp`}
-              alt={artwork.title}
-              loading="lazy"
-            />
-            <div class="overlay">
-              <button 
-                class="like-btn" 
-                data-id={artwork.id}
-                onclick="event.preventDefault(); toggleLike(this);"
-              >
-                <span class="heart">🤍</span>
-              </button>
-              <div class="share-container">
-                <button 
-                  class="share-btn"
-                  onclick="event.preventDefault(); toggleShare(this);"
-                >
-                  📤
-                </button>
-                <div class="share-menu">
-                  <a 
-                    class="share-option"
-                    href={`https://wa.me/?text=${encodeURIComponent(`Mira: "${artwork.title}" de ${artwork.artist}`)}`}
-                    target="_blank"
-                    onclick="event.stopPropagation();"
-                  >
-                    WhatsApp
-                  </a>
-                  <a 
-                    class="share-option" 
-                    href="https://instagram.com/elbondicolectivo" 
-                    target="_blank"
-                    onclick="event.stopPropagation();"
-                  >
-                    Instagram
-                  </a>
-                  <a 
-                    class="share-option" 
-                    href="https://facebook.com" 
-                    target="_blank"
-                    onclick="event.stopPropagation();"
-                  >
-                    Facebook
-                  </a>
-                  <a 
-                    class="share-option"
-                    href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`"${artwork.title}" de ${artwork.artist}`)}`}
-                    target="_blank"
-                    onclick="event.stopPropagation();"
-                  >
-                    Twitter
-                  </a>
-                  <a 
-                    class="share-option" 
-                    href="https://linkedin.com" 
-                    target="_blank"
-                    onclick="event.stopPropagation();"
-                  >
-                    LinkedIn
-                  </a>
-                  <a
-                    class="share-option"
-                    href={`mailto:?subject=${encodeURIComponent(artwork.title)}`}
-                    onclick="event.stopPropagation();"
-                  >
-                    Email
-                  </a>
+          <a href={`/obra/${artwork.id}`} class="artwork-link">
+            <div class="artwork-image-wrapper">
+              <img 
+                src={`/images/artworks/thumbnails/${artwork.thumbFile}.webp`}
+                alt={artwork.title}
+                loading="lazy"
+                class="artwork-image"
+              />
+              
+              <!-- OVERLAY CON DATOS Y BOTONES -->
+              <div class="overlay">
+                <div class="overlay-content">
+                  <h3 class="artwork-title">{artwork.title}</h3>
+                  <p class="artwork-artist">{artwork.artist}</p>
+                  <p class="artwork-price">{artwork.price}</p>
+                  
+                  <div class="action-buttons">
+                    <button 
+                      class="like-btn" 
+                      data-id={artwork.id}
+                      onclick="event.preventDefault(); event.stopPropagation(); toggleLike(this);"
+                      title="Me gusta"
+                    >
+                      <span class="heart">🤍</span>
+                    </button>
+                    
+                    <button 
+                      class="share-btn"
+                      onclick="event.preventDefault(); event.stopPropagation(); toggleShare(event);"
+                      title="Compartir"
+                    >
+                      📤
+                    </button>
+                  </div>
+
+                  <!-- MENÚ COMPARTIR -->
+                  <div class="share-menu">
+                    <a 
+                      class="share-option"
+                      href={`https://wa.me/?text=${encodeURIComponent(`Mira esta obra: "${artwork.title}" de ${artwork.artist} - ${artwork.price}`)}`}
+                      target="_blank"
+                      onclick="event.stopPropagation();"
+                    >
+                      WhatsApp
+                    </a>
+                    <a 
+                      class="share-option"
+                      href="https://www.facebook.com/sharer/sharer.php"
+                      target="_blank"
+                      onclick="event.stopPropagation();"
+                    >
+                      Facebook
+                    </a>
+                    <a
+                      class="share-option"
+                      href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`"${artwork.title}" de ${artwork.artist}`)}`}
+                      target="_blank"
+                      onclick="event.stopPropagation();"
+                    >
+                      Twitter
+                    </a>
+                    <a
+                      class="share-option"
+                      href={`mailto:?subject=${encodeURIComponent(`Obra: ${artwork.title}`)}&body=${encodeURIComponent(`Te quiero compartir esta obra: "${artwork.title}" de ${artwork.artist} - ${artwork.price}`)}`}
+                      onclick="event.stopPropagation();"
+                    >
+                      Email
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="artwork-info">
-            <h4>{artwork.title}</h4>
-            <p class="artist">{artwork.artist}</p>
-            <p class="price">{artwork.price}</p>
-          </div>
-        </a>
+          </a>
+        </div>
       ))}
     </div>
   </div>
@@ -156,22 +124,21 @@ const featured = artworks.filter(a => a.featured);
 <script>
   // ✅ BÚSQUEDA
   const searchInput = document.getElementById('search-input') as HTMLInputElement | null;
-  const artworkItems = document.querySelectorAll('.artwork-item');
+  const cards = document.querySelectorAll('.artwork-card');
 
   if (searchInput) {
     searchInput.addEventListener('input', (e: Event) => {
       const target = e.target as HTMLInputElement;
       const searchTerm = target.value.toLowerCase();
       
-      artworkItems.forEach(item => {
-        const element = item as HTMLElement;
-        const title = element.dataset.title;
-        const artist = element.dataset.artist;
+      cards.forEach(card => {
+        const title = (card as HTMLElement).dataset.title || '';
+        const artist = (card as HTMLElement).dataset.artist || '';
         
-        if ((title && title.includes(searchTerm)) || (artist && artist.includes(searchTerm)) || searchTerm === '') {
-          element.style.display = 'block';
+        if (title.includes(searchTerm) || artist.includes(searchTerm) || searchTerm === '') {
+          (card as HTMLElement).style.display = 'block';
         } else {
-          element.style.display = 'none';
+          (card as HTMLElement).style.display = 'none';
         }
       });
     });
@@ -189,50 +156,49 @@ const featured = artworks.filter(a => a.featured);
         const id = button.dataset.id;
         if (id) {
           localStorage.setItem(`liked-${id}`, 'true');
-          showToast(`¡Te encanta esta obra!`);
+          showToast('¡Obra guardada en favoritos!');
         }
       } else {
         heart.textContent = '🤍';
         const id = button.dataset.id;
         if (id) {
           localStorage.removeItem(`liked-${id}`);
+          showToast('Eliminado de favoritos');
         }
       }
     }
   }
 
   // ✅ COMPARTIR
-  function toggleShare(btn: HTMLElement) {
-    const button = btn as HTMLButtonElement;
-    const parent = button.parentElement;
-    if (!parent) return;
+  function toggleShare(event: Event) {
+    const btn = event.target as HTMLElement;
+    const actionButtons = btn.closest('.action-buttons') as HTMLElement;
+    if (!actionButtons) return;
     
-    const menu = parent.querySelector('.share-menu') as HTMLElement | null;
-    
+    const menu = actionButtons.querySelector('.share-menu') as HTMLElement | null;
     if (!menu) return;
     
-    document.querySelectorAll('.share-menu').forEach((m) => {
-      const element = m as HTMLElement;
-      if (element !== menu) {
-        element.classList.remove('active');
+    // Cerrar otros menús
+    document.querySelectorAll('.share-menu.active').forEach((m) => {
+      if (m !== menu) {
+        (m as HTMLElement).classList.remove('active');
       }
     });
     
     menu.classList.toggle('active');
   }
 
-  // ✅ CERRAR MENÚ
+  // ✅ CERRAR MENÚ AL CLICKEAR AFUERA
   document.addEventListener('click', (e: MouseEvent) => {
     const target = e.target as HTMLElement;
-    if (!target.closest('.share-container')) {
-      document.querySelectorAll('.share-menu').forEach((m) => {
-        const element = m as HTMLElement;
-        element.classList.remove('active');
+    if (!target.closest('.action-buttons')) {
+      document.querySelectorAll('.share-menu.active').forEach((m) => {
+        (m as HTMLElement).classList.remove('active');
       });
     }
   });
 
-  // ✅ CARGAR LIKES
+  // ✅ CARGAR LIKES GUARDADOS
   const likeButtons = document.querySelectorAll('.like-btn');
   likeButtons.forEach((btn) => {
     const button = btn as HTMLButtonElement;
@@ -245,54 +211,6 @@ const featured = artworks.filter(a => a.featured);
       }
     }
   });
-
-  // ✅ SHUFFLE
-  function shuffleArtworks() {
-    const grid = document.getElementById('gallery-grid') as HTMLElement | null;
-    if (!grid) return;
-    
-    const items = Array.from(document.querySelectorAll('.artwork-item'));
-    
-    for (let i = items.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [items[i], items[j]] = [items[j], items[i]];
-    }
-    
-    grid.innerHTML = '';
-    items.forEach((item) => {
-      grid.appendChild(item);
-    });
-    
-    showToast('¡Orden aleatorio!');
-  }
-
-  // ✅ SORT
-  let sortOrder = 'asc';
-  function sortArtworks() {
-    const grid = document.getElementById('gallery-grid') as HTMLElement | null;
-    if (!grid) return;
-    
-    const items = Array.from(document.querySelectorAll('.artwork-item'));
-    
-    items.sort((a, b) => {
-      const priceA = parseInt(
-        (a.querySelector('.price') as HTMLElement | null)?.textContent?.replace(/\D/g, '') || '0'
-      );
-      const priceB = parseInt(
-        (b.querySelector('.price') as HTMLElement | null)?.textContent?.replace(/\D/g, '') || '0'
-      );
-      
-      return sortOrder === 'asc' ? priceA - priceB : priceB - priceA;
-    });
-    
-    sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
-    grid.innerHTML = '';
-    items.forEach((item) => {
-      grid.appendChild(item);
-    });
-    
-    showToast(`Ordenado por precio ${sortOrder === 'asc' ? 'ascendente' : 'descendente'}`);
-  }
 
   // ✅ TOAST
   function showToast(message: string) {
@@ -315,197 +233,174 @@ const featured = artworks.filter(a => a.featured);
 <style>
   .gallery {
     padding: var(--spacing-xl) var(--spacing-lg);
-    border-bottom: 1px solid var(--border-color);
+    min-height: 60vh;
   }
 
   .gallery-container {
-    max-width: 1600px;
+    max-width: 1400px;
     margin: 0 auto;
   }
 
   .gallery-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     margin-bottom: var(--spacing-xl);
-    gap: var(--spacing-lg);
   }
 
-  .gallery-header h2 {
-    font-size: 2.5rem;
-    margin: 0;
+  .gallery-header h1 {
+    font-size: 3rem;
+    margin-bottom: var(--spacing-lg);
+    font-weight: 700;
   }
 
   .gallery-controls {
     display: flex;
     gap: var(--spacing-lg);
     align-items: center;
-    flex-wrap: wrap;
-  }
-
-  .control-btn {
-    background: none;
-    border: none;
-    font-size: 0.9rem;
-    color: var(--text-light);
-    cursor: pointer;
-    transition: color 0.3s;
-    font-weight: 500;
-  }
-
-  .control-btn:hover {
-    color: var(--text);
   }
 
   .search-input {
     border: 1px solid var(--border-color);
-    padding: var(--spacing-sm) var(--spacing-md);
-    font-size: 0.9rem;
+    padding: var(--spacing-md) var(--spacing-lg);
+    font-size: 1rem;
     border-radius: 4px;
     background: transparent;
     color: var(--text);
-    min-width: 200px;
+    min-width: 300px;
   }
 
   .search-input::placeholder {
     color: var(--text-lighter);
   }
 
-  .count {
-    font-size: 1.3rem;
-    font-weight: 600;
+  .search-input:focus {
+    outline: none;
+    border-color: var(--text);
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
   }
 
-  .featured-section {
-    margin-bottom: var(--spacing-xl);
-    padding-bottom: var(--spacing-xl);
-    border-bottom: 1px solid var(--border-color);
-  }
-
-  .featured-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: var(--spacing-lg);
-  }
-
-  .featured-card {
-    text-decoration: none;
-    color: inherit;
-    transition: all 0.3s;
-  }
-
-  .featured-card:hover {
-    opacity: 0.8;
-  }
-
-  .featured-image {
-    position: relative;
-    aspect-ratio: 1;
-    overflow: hidden;
-    border-radius: 4px;
-    margin-bottom: var(--spacing-md);
-    background: var(--bg-light);
-  }
-
-  .featured-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.4s;
-  }
-
-  .featured-card:hover .featured-image img {
-    transform: scale(1.05);
-  }
-
-  .featured-info h3 {
-    font-size: 1.1rem;
-    margin-bottom: var(--spacing-xs);
-    font-weight: 600;
-  }
-
-  .featured-info .artist {
-    font-size: 0.85rem;
-    color: var(--text-light);
-  }
-
+  /* GALERÍA GRID */
   .gallery-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: var(--spacing-lg);
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: var(--spacing-xl);
   }
 
-  .artwork-item {
+  /* CARD DE OBRA */
+  .artwork-card {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+  }
+
+  .artwork-card:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    transform: translateY(-4px);
+  }
+
+  .artwork-link {
+    display: block;
     text-decoration: none;
     color: inherit;
-    cursor: pointer;
-    display: block;
-    transition: all 0.3s;
   }
 
-  .artwork-item:hover {
-    opacity: 0.9;
-  }
-
-  .artwork-image-container {
+  /* IMAGEN */
+  .artwork-image-wrapper {
     position: relative;
     aspect-ratio: 1;
-    background: var(--bg-light);
-    border-radius: 4px;
-    margin-bottom: var(--spacing-md);
     overflow: hidden;
+    background: var(--bg-light);
   }
 
-  .artwork-image-container img {
+  .artwork-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.4s;
+    transition: transform 0.4s ease;
   }
 
-  .artwork-item:hover .artwork-image-container img {
-    transform: scale(1.05);
+  .artwork-card:hover .artwork-image {
+    transform: scale(1.08);
   }
 
+  /* OVERLAY */
   .overlay {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
+    background: rgba(0, 0, 0, 0.75);
     display: flex;
-    gap: var(--spacing-md);
-    padding: var(--spacing-md);
-    justify-content: flex-end;
-    align-items: flex-start;
+    align-items: center;
+    justify-content: center;
     opacity: 0;
-    transition: opacity 0.3s;
-    background: rgba(0, 0, 0, 0.1);
+    transition: opacity 0.3s ease;
+    backdrop-filter: blur(2px);
   }
 
-  .artwork-image-container:hover .overlay {
+  .artwork-card:hover .overlay {
     opacity: 1;
+  }
+
+  .overlay-content {
+    color: white;
+    text-align: center;
+    width: 100%;
+    padding: var(--spacing-lg);
+  }
+
+  .artwork-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: var(--spacing-sm);
+    line-height: 1.2;
+  }
+
+  .artwork-artist {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .artwork-price {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: white;
+    margin-bottom: var(--spacing-lg);
+  }
+
+  /* BOTONES DE ACCIÓN */
+  .action-buttons {
+    display: flex;
+    gap: var(--spacing-md);
+    justify-content: center;
+    align-items: center;
+    position: relative;
   }
 
   .like-btn,
   .share-btn {
-    width: 40px;
-    height: 40px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.95);
+    border: 2px solid white;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    font-size: 1.4rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition: all 0.3s;
+    backdrop-filter: blur(10px);
   }
 
   .like-btn:hover,
   .share-btn:hover {
-    background: white;
-    border-color: var(--text);
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
   }
 
   .like-btn.liked {
@@ -513,90 +408,82 @@ const featured = artworks.filter(a => a.featured);
     border-color: #ff6b6b;
   }
 
-  .share-container {
-    position: relative;
-  }
-
+  /* MENÚ COMPARTIR */
   .share-menu {
-    display: none;
     position: absolute;
+    bottom: 60px;
+    left: 50%;
+    transform: translateX(-50%);
     background: white;
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    top: 100%;
-    right: 0;
-    margin-top: var(--spacing-sm);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-    min-width: 140px;
-    z-index: 20;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    min-width: 180px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 10;
   }
 
   .share-menu.active {
-    display: block;
+    opacity: 1;
+    pointer-events: all;
   }
 
   .share-option {
     display: block;
-    padding: var(--spacing-sm) var(--spacing-md);
-    font-size: 0.85rem;
+    padding: var(--spacing-md);
     color: var(--text);
     text-decoration: none;
-    transition: background 0.2s;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .share-option:last-child {
+    border-bottom: none;
   }
 
   .share-option:hover {
     background: var(--bg-light);
   }
 
-  .artwork-info h4 {
-    font-size: 1rem;
-    margin-bottom: var(--spacing-xs);
-    font-weight: 600;
-  }
-
-  .artwork-info .artist {
-    font-size: 0.85rem;
-    color: var(--text-light);
-    margin-bottom: var(--spacing-xs);
-  }
-
-  .artwork-info .price {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--text);
-  }
-
-  @media (max-width: 968px) {
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
     .gallery {
       padding: var(--spacing-lg) var(--spacing-md);
     }
 
-    .gallery-header {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-
-    .gallery-controls {
-      width: 100%;
-    }
-
-    .search-input {
-      min-width: auto;
-      flex: 1;
+    .gallery-header h1 {
+      font-size: 2rem;
     }
 
     .gallery-grid {
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: var(--spacing-md);
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: var(--spacing-lg);
     }
 
-    .featured-grid {
-      grid-template-columns: 1fr;
+    .search-input {
+      min-width: 100%;
+    }
+
+    .overlay-content {
+      padding: var(--spacing-md);
+    }
+
+    .artwork-title {
+      font-size: 1.1rem;
+    }
+
+    .like-btn,
+    .share-btn {
+      width: 40px;
+      height: 40px;
+      font-size: 1.1rem;
     }
   }
 </style>
 
-<!-- ✅ TOAST GLOBAL -->
+<!-- TOAST GLOBAL -->
 <style is:global>
   .toast {
     position: fixed;
@@ -605,11 +492,13 @@ const featured = artworks.filter(a => a.featured);
     background: var(--primary, #000);
     color: white;
     padding: 1rem 1.5rem;
-    border-radius: 4px;
+    border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     z-index: 2000;
     opacity: 0;
     transition: opacity 0.3s ease;
+    font-size: 0.95rem;
+    font-weight: 500;
   }
 
   .toast.show {
@@ -620,6 +509,7 @@ const featured = artworks.filter(a => a.featured);
     .toast {
       left: 10px;
       right: 10px;
+      bottom: 10px;
     }
   }
 </style>
