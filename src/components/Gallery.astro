@@ -19,28 +19,23 @@ const artworks: Artwork[] = artworksData.artworks as Artwork[];
 
 <section id="catalogo" class="gallery">
   <div class="gallery-container">
-    <!-- HEADER SIMPLE -->
     <div class="gallery-header">
       <h1>Catálogo</h1>
-      <div class="gallery-controls">
-        <input 
-          type="text" 
-          class="search-input" 
-          placeholder="Buscar obra..."
-          id="search-input"
-        />
-      </div>
+      <input 
+        type="text" 
+        class="search-input" 
+        placeholder="Buscar obra..."
+        id="search-input"
+      />
     </div>
 
-    <!-- GALERÍA GRID LIMPIA -->
     <div class="gallery-grid" id="gallery-grid">
       {artworks.map((artwork) => (
         <div 
           class="artwork-card" 
-          data-category={artwork.category}
+          data-id={artwork.id}
           data-title={artwork.title.toLowerCase()}
           data-artist={artwork.artist.toLowerCase()}
-          data-id={artwork.id}
         >
           <a href={`/obra/${artwork.id}`} class="artwork-link">
             <div class="artwork-image-wrapper">
@@ -48,68 +43,39 @@ const artworks: Artwork[] = artworksData.artworks as Artwork[];
                 src={`/images/artworks/thumbnails/${artwork.thumbFile}.webp`}
                 alt={artwork.title}
                 loading="lazy"
-                class="artwork-image"
               />
               
-              <!-- OVERLAY CON DATOS Y BOTONES -->
               <div class="overlay">
                 <div class="overlay-content">
-                  <h3 class="artwork-title">{artwork.title}</h3>
-                  <p class="artwork-artist">{artwork.artist}</p>
-                  <p class="artwork-price">{artwork.price}</p>
+                  <h3>{artwork.title}</h3>
+                  <p>{artwork.artist}</p>
+                  <p class="price">{artwork.price}</p>
                   
                   <div class="action-buttons">
                     <button 
                       class="like-btn" 
                       data-id={artwork.id}
                       onclick="event.preventDefault(); event.stopPropagation(); toggleLike(this);"
-                      title="Me gusta"
                     >
-                      <span class="heart">🤍</span>
+                      🤍
                     </button>
                     
                     <button 
                       class="share-btn"
-                      onclick="event.preventDefault(); event.stopPropagation(); toggleShare(event);"
-                      title="Compartir"
+                      data-title={artwork.title}
+                      data-artist={artwork.artist}
+                      data-id={artwork.id}
+                      onclick="event.preventDefault(); event.stopPropagation(); toggleShare(this);"
                     >
                       📤
                     </button>
                   </div>
 
-                  <!-- MENÚ COMPARTIR -->
                   <div class="share-menu">
-                    <a 
-                      class="share-option"
-                      href={`https://wa.me/?text=${encodeURIComponent(`Mira esta obra: "${artwork.title}" de ${artwork.artist} - ${artwork.price}`)}`}
-                      target="_blank"
-                      onclick="event.stopPropagation();"
-                    >
-                      WhatsApp
-                    </a>
-                    <a 
-                      class="share-option"
-                      href="https://www.facebook.com/sharer/sharer.php"
-                      target="_blank"
-                      onclick="event.stopPropagation();"
-                    >
-                      Facebook
-                    </a>
-                    <a
-                      class="share-option"
-                      href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`"${artwork.title}" de ${artwork.artist}`)}`}
-                      target="_blank"
-                      onclick="event.stopPropagation();"
-                    >
-                      Twitter
-                    </a>
-                    <a
-                      class="share-option"
-                      href={`mailto:?subject=${encodeURIComponent(`Obra: ${artwork.title}`)}&body=${encodeURIComponent(`Te quiero compartir esta obra: "${artwork.title}" de ${artwork.artist} - ${artwork.price}`)}`}
-                      onclick="event.stopPropagation();"
-                    >
-                      Email
-                    </a>
+                    <a class="share-option whatsapp-share">WhatsApp</a>
+                    <a class="share-option facebook-share">Facebook</a>
+                    <a class="share-option twitter-share">Twitter</a>
+                    <a class="share-option email-share">Email</a>
                   </div>
                 </div>
               </div>
@@ -123,106 +89,84 @@ const artworks: Artwork[] = artworksData.artworks as Artwork[];
 
 <script>
   // ✅ BÚSQUEDA
-  const searchInput = document.getElementById('search-input') as HTMLInputElement | null;
-  const cards = document.querySelectorAll('.artwork-card');
-
-  if (searchInput) {
-    searchInput.addEventListener('input', (e: Event) => {
-      const target = e.target as HTMLInputElement;
-      const searchTerm = target.value.toLowerCase();
-      
-      cards.forEach(card => {
-        const title = (card as HTMLElement).dataset.title || '';
-        const artist = (card as HTMLElement).dataset.artist || '';
-        
-        if (title.includes(searchTerm) || artist.includes(searchTerm) || searchTerm === '') {
-          (card as HTMLElement).style.display = 'block';
-        } else {
-          (card as HTMLElement).style.display = 'none';
-        }
-      });
+  document.getElementById('search-input')?.addEventListener('input', (e) => {
+    const term = (e.target as HTMLInputElement).value.toLowerCase();
+    document.querySelectorAll('.artwork-card').forEach(card => {
+      const title = (card as HTMLElement).dataset.title || '';
+      const artist = (card as HTMLElement).dataset.artist || '';
+      const show = title.includes(term) || artist.includes(term) || term === '';
+      (card as HTMLElement).style.display = show ? 'block' : 'none';
     });
-  }
+  });
 
   // ✅ ME GUSTA
   function toggleLike(btn: HTMLElement) {
-    const button = btn as HTMLButtonElement;
-    button.classList.toggle('liked');
-    const heart = button.querySelector('.heart') as HTMLElement | null;
-    
-    if (heart) {
-      if (button.classList.contains('liked')) {
-        heart.textContent = '❤️';
-        const id = button.dataset.id;
-        if (id) {
-          localStorage.setItem(`liked-${id}`, 'true');
-          showToast('¡Obra guardada en favoritos!');
-        }
+    (btn as HTMLButtonElement).classList.toggle('liked');
+    const id = btn.getAttribute('data-id');
+    if (id) {
+      const isLiked = (btn as HTMLButtonElement).classList.contains('liked');
+      btn.textContent = isLiked ? '❤️' : '🤍';
+      if (isLiked) {
+        localStorage.setItem(`liked-${id}`, 'true');
+        showToast('¡Guardado en favoritos!');
       } else {
-        heart.textContent = '🤍';
-        const id = button.dataset.id;
-        if (id) {
-          localStorage.removeItem(`liked-${id}`);
-          showToast('Eliminado de favoritos');
-        }
+        localStorage.removeItem(`liked-${id}`);
       }
     }
   }
 
   // ✅ COMPARTIR
-  function toggleShare(event: Event) {
-    const btn = event.target as HTMLElement;
-    const actionButtons = btn.closest('.action-buttons') as HTMLElement;
-    if (!actionButtons) return;
-    
-    const menu = actionButtons.querySelector('.share-menu') as HTMLElement | null;
+  function toggleShare(btn: HTMLElement) {
+    const menu = btn.closest('.action-buttons')?.querySelector('.share-menu') as HTMLElement;
     if (!menu) return;
     
-    // Cerrar otros menús
-    document.querySelectorAll('.share-menu.active').forEach((m) => {
-      if (m !== menu) {
-        (m as HTMLElement).classList.remove('active');
-      }
-    });
-    
     menu.classList.toggle('active');
+    
+    const title = btn.getAttribute('data-title') || 'Obra';
+    const artist = btn.getAttribute('data-artist') || '';
+    const id = btn.getAttribute('data-id') || '1';
+    
+    const wa = menu.querySelector('.whatsapp-share') as HTMLAnchorElement;
+    const fb = menu.querySelector('.facebook-share') as HTMLAnchorElement;
+    const tw = menu.querySelector('.twitter-share') as HTMLAnchorElement;
+    const em = menu.querySelector('.email-share') as HTMLAnchorElement;
+    
+    if (wa) wa.href = `https://wa.me/?text=${encodeURIComponent(`Mira: "${title}" de ${artist}`)}`;
+    if (fb) fb.href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.origin + '/obra/' + id)}`;
+    if (tw) tw.href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(`"${title}" de ${artist}`)}`;
+    if (em) em.href = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(`Mira esta obra: "${title}" de ${artist}`)}`;
+    
+    if (wa) wa.target = '_blank';
+    if (fb) fb.target = '_blank';
+    if (tw) tw.target = '_blank';
   }
 
-  // ✅ CERRAR MENÚ AL CLICKEAR AFUERA
-  document.addEventListener('click', (e: MouseEvent) => {
+  // ✅ CERRAR MENÚ
+  document.addEventListener('click', (e) => {
     const target = e.target as HTMLElement;
     if (!target.closest('.action-buttons')) {
-      document.querySelectorAll('.share-menu.active').forEach((m) => {
+      document.querySelectorAll('.share-menu.active').forEach(m => {
         (m as HTMLElement).classList.remove('active');
       });
     }
   });
 
-  // ✅ CARGAR LIKES GUARDADOS
-  const likeButtons = document.querySelectorAll('.like-btn');
-  likeButtons.forEach((btn) => {
-    const button = btn as HTMLButtonElement;
-    const id = button.dataset.id;
+  // ✅ CARGAR LIKES
+  document.querySelectorAll('.like-btn').forEach(btn => {
+    const id = btn.getAttribute('data-id');
     if (id && localStorage.getItem(`liked-${id}`)) {
-      button.classList.add('liked');
-      const heart = button.querySelector('.heart') as HTMLElement | null;
-      if (heart) {
-        heart.textContent = '❤️';
-      }
+      (btn as HTMLButtonElement).classList.add('liked');
+      btn.textContent = '❤️';
     }
   });
 
   // ✅ TOAST
-  function showToast(message: string) {
+  function showToast(msg: string) {
     const toast = document.createElement('div');
     toast.className = 'toast';
-    toast.textContent = message;
+    toast.textContent = msg;
     document.body.appendChild(toast);
-    
-    setTimeout(() => {
-      toast.classList.add('show');
-    }, 10);
-    
+    setTimeout(() => toast.classList.add('show'), 10);
     setTimeout(() => {
       toast.classList.remove('show');
       setTimeout(() => toast.remove(), 300);
@@ -233,7 +177,6 @@ const artworks: Artwork[] = artworksData.artworks as Artwork[];
 <style>
   .gallery {
     padding: var(--spacing-xl) var(--spacing-lg);
-    min-height: 60vh;
   }
 
   .gallery-container {
@@ -251,12 +194,6 @@ const artworks: Artwork[] = artworksData.artworks as Artwork[];
     font-weight: 700;
   }
 
-  .gallery-controls {
-    display: flex;
-    gap: var(--spacing-lg);
-    align-items: center;
-  }
-
   .search-input {
     border: 1px solid var(--border-color);
     padding: var(--spacing-md) var(--spacing-lg);
@@ -267,26 +204,18 @@ const artworks: Artwork[] = artworksData.artworks as Artwork[];
     min-width: 300px;
   }
 
-  .search-input::placeholder {
-    color: var(--text-lighter);
-  }
-
   .search-input:focus {
     outline: none;
     border-color: var(--text);
-    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
   }
 
-  /* GALERÍA GRID */
   .gallery-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: var(--spacing-xl);
   }
 
-  /* CARD DE OBRA */
   .artwork-card {
-    position: relative;
     border-radius: 8px;
     overflow: hidden;
     background: white;
@@ -302,10 +231,8 @@ const artworks: Artwork[] = artworksData.artworks as Artwork[];
   .artwork-link {
     display: block;
     text-decoration: none;
-    color: inherit;
   }
 
-  /* IMAGEN */
   .artwork-image-wrapper {
     position: relative;
     aspect-ratio: 1;
@@ -313,31 +240,26 @@ const artworks: Artwork[] = artworksData.artworks as Artwork[];
     background: var(--bg-light);
   }
 
-  .artwork-image {
+  .artwork-image-wrapper img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     transition: transform 0.4s ease;
   }
 
-  .artwork-card:hover .artwork-image {
+  .artwork-card:hover img {
     transform: scale(1.08);
   }
 
-  /* OVERLAY */
   .overlay {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    inset: 0;
     background: rgba(0, 0, 0, 0.75);
     display: flex;
     align-items: center;
     justify-content: center;
     opacity: 0;
     transition: opacity 0.3s ease;
-    backdrop-filter: blur(2px);
   }
 
   .artwork-card:hover .overlay {
@@ -347,36 +269,29 @@ const artworks: Artwork[] = artworksData.artworks as Artwork[];
   .overlay-content {
     color: white;
     text-align: center;
-    width: 100%;
     padding: var(--spacing-lg);
   }
 
-  .artwork-title {
+  .overlay-content h3 {
     font-size: 1.3rem;
-    font-weight: 700;
     margin-bottom: var(--spacing-sm);
-    line-height: 1.2;
   }
 
-  .artwork-artist {
+  .overlay-content p {
     font-size: 0.95rem;
     color: rgba(255, 255, 255, 0.8);
-    margin-bottom: var(--spacing-sm);
   }
 
-  .artwork-price {
+  .overlay-content .price {
     font-size: 1.2rem;
     font-weight: 600;
-    color: white;
-    margin-bottom: var(--spacing-lg);
+    margin: var(--spacing-md) 0;
   }
 
-  /* BOTONES DE ACCIÓN */
   .action-buttons {
     display: flex;
     gap: var(--spacing-md);
     justify-content: center;
-    align-items: center;
     position: relative;
   }
 
@@ -387,14 +302,9 @@ const artworks: Artwork[] = artworksData.artworks as Artwork[];
     border-radius: 50%;
     border: 2px solid white;
     background: rgba(255, 255, 255, 0.2);
-    color: white;
     font-size: 1.4rem;
     cursor: pointer;
     transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    backdrop-filter: blur(10px);
   }
 
   .like-btn:hover,
@@ -408,7 +318,6 @@ const artworks: Artwork[] = artworksData.artworks as Artwork[];
     border-color: #ff6b6b;
   }
 
-  /* MENÚ COMPARTIR */
   .share-menu {
     position: absolute;
     bottom: 60px;
@@ -417,11 +326,10 @@ const artworks: Artwork[] = artworksData.artworks as Artwork[];
     background: white;
     border-radius: 8px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-    min-width: 180px;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s ease;
-    z-index: 10;
+    min-width: 160px;
   }
 
   .share-menu.active {
@@ -435,8 +343,9 @@ const artworks: Artwork[] = artworksData.artworks as Artwork[];
     color: var(--text);
     text-decoration: none;
     font-size: 0.95rem;
-    transition: all 0.2s ease;
     border-bottom: 1px solid var(--border-color);
+    cursor: pointer;
+    transition: background 0.2s;
   }
 
   .share-option:last-child {
@@ -447,69 +356,37 @@ const artworks: Artwork[] = artworksData.artworks as Artwork[];
     background: var(--bg-light);
   }
 
-  /* RESPONSIVE */
   @media (max-width: 768px) {
-    .gallery {
-      padding: var(--spacing-lg) var(--spacing-md);
-    }
-
     .gallery-header h1 {
       font-size: 2rem;
     }
 
     .gallery-grid {
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
       gap: var(--spacing-lg);
     }
 
     .search-input {
       min-width: 100%;
     }
-
-    .overlay-content {
-      padding: var(--spacing-md);
-    }
-
-    .artwork-title {
-      font-size: 1.1rem;
-    }
-
-    .like-btn,
-    .share-btn {
-      width: 40px;
-      height: 40px;
-      font-size: 1.1rem;
-    }
   }
 </style>
 
-<!-- TOAST GLOBAL -->
 <style is:global>
   .toast {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    background: var(--primary, #000);
+    background: black;
     color: white;
     padding: 1rem 1.5rem;
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     z-index: 2000;
     opacity: 0;
-    transition: opacity 0.3s ease;
-    font-size: 0.95rem;
-    font-weight: 500;
+    transition: opacity 0.3s;
   }
 
   .toast.show {
     opacity: 1;
-  }
-
-  @media (max-width: 768px) {
-    .toast {
-      left: 10px;
-      right: 10px;
-      bottom: 10px;
-    }
   }
 </style>
