@@ -5,19 +5,84 @@ import Footer from '../components/Footer.astro';
 
 const history = [
   {
+    year: 2026,
+    title: "Laboratorio de Emboscadas",
+    description: "Desarrollo de un programa de formación y clínica de obra, transfiriendo las metodologías de 'guerrilla artística' y soberanía técnica a nuevas generaciones de artistas del NOA."
+  },
+  {
+    year: 2025,
+    title: "ZARZA: Alto guiso votivo",
+    description: "Exhibición en el Centro Cultural Alberto Rougés. Instalación de sitio específico que replica la 'llama eterna' de la Casa de Gobierno de Tucumán, activada mediante un sistema de biogás alimentado por desechos orgánicos."
+  },
+  {
     year: 2024,
-    title: "Expansión del Colectivo",
-    description: "Se suma Ana Morales al equipo con obras digitales innovadoras"
+    title: "Soberanía Energética y Biocombustibles",
+    description: "Inicio de una línea de investigación sobre energías renovables aplicadas al arte. El colectivo explora la producción de biogás como insumo creativo, buscando autonomía técnica y cuestionando los sistemas de consumo energético tradicionales."
   },
   {
     year: 2023,
-    title: "Primer Año Exitoso",
-    description: "El Bondi Colectivo se posiciona como referente en arte contemporáneo"
+    title: "Monumentos que crecen hacia adentro",
+    description: "Cierre del Programa de Artistas de la Universidad Torcuato Di Tella con la presentación de 'De la Venus Roja' en Buenos Aires."
   },
   {
     year: 2022,
-    title: "Fundación",
-    description: "Se funda El Bondi Colectivo con los trabajos de 3 artistas iniciales"
+    title: "Primer Premio Nacional MUNT",
+    description: "Obtención del 1er Premio en el XVI Salón Nacional de Arte Contemporáneo con la instalación 'Teatro de Saturno indoor'. Participación en el 110° Salón Nacional de Artes Visuales."
+  },
+  {
+    year: 2021,
+    title: "BIENALSUR",
+    description: "Exhibición de 'Eterno Retorno del Nuevo Mundo', una propuesta que tensiona la arqueología y el arte contemporáneo en diálogo con el contexto regional."
+  },
+  {
+    year: 2020,
+    title: "Resiliencia y Registro",
+    description: "Fase de documentación y replanteo de prácticas artísticas en espacios confinados, profundizando en el archivo como obra de arte."
+  },
+  {
+    year: 2019,
+    title: "Bienal de Arte Joven",
+    description: "Presentación de 'C-14' en el Centro Cultural Recoleta, una instalación-acción sobre la producción cerámica ancestral y la identidad del Noroeste Argentino."
+  },
+  {
+    year: 2018,
+    title: "Proyecciones Federales",
+    description: "Circulación de obras en salones regionales y nacionales, consolidando el discurso crítico sobre los métodos de exhibición estática."
+  },
+  {
+    year: 2017,
+    title: "Acciones de Sitio Específico",
+    description: "Desarrollo de intervenciones urbanas que buscan forzar al espectador a activar sus sentidos ante el entorno cotidiano."
+  },
+  {
+    year: 2016,
+    title: "Maduración Grupal",
+    description: "Participación en clínicas de análisis de obra y residencias, fortaleciendo el concepto de la 'canción sobre el cantante' en la producción colectiva."
+  },
+  {
+    year: 2015,
+    title: "Mercadicto y Espacios Alternativos",
+    description: "Consolidación de proyectos de autogestión y ferias de arte independiente, rompiendo con los circuitos institucionales tradicionales."
+  },
+  {
+    year: 2014,
+    title: "Guerrilla Artística: Falcon y Tanque",
+    description: "Intervenciones de alto impacto social en la Vigilia por el Día de la Memoria, profundizando en el arte como herramienta de tensión política."
+  },
+  {
+    year: 2013,
+    title: "Stanpunkslebre: El Hito Fundante",
+    description: "Primera muestra oficial en el Tucumán Hostel. Con la creación del tanque de cartón, se establece la metodología de 'sin autoría': el colectivo prima sobre el individuo, hackeando la escena local."
+  },
+  {
+    year: 2012,
+    title: "Primeras Emboscadas",
+    description: "Inician las prácticas de campo y la inclusión de recursos que permiten una mirada crítica al entorno urbano de San Miguel de Tucumán."
+  },
+  {
+    year: 2011,
+    title: "Fundación en Tucumán",
+    description: "Nace El Bondi Colectivo bajo la premisa de que el arte es una forma de emboscada, enfocándose en la 'canción' y no en el 'cantante'."
   }
 ];
 ---
@@ -28,7 +93,7 @@ const history = [
   <section class="history-section">
     <div class="container">
       <h1>Historial</h1>
-      <p class="subtitle">Nuestra trayectoria y evolución</p>
+      <p class="subtitle">Nuestros hitos y trayectoria</p>
       
       <div class="timeline">
         {history.map((item, index) => (
