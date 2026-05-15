@@ -21,9 +21,9 @@ interface Artwork {
   featured: boolean;
 }
 
-const artworks: Artwork[] = artworksData.artworks as Artwork[];
-
+// ✅ MOVER getStaticPaths AQUÍ Y DEFINIR artworks DENTRO
 export function getStaticPaths() {
+  const artworks: Artwork[] = (artworksData as any).artworks as Artwork[];
   return artworks.map(artwork => ({
     params: { id: artwork.id.toString() },
     props: { artwork }
@@ -101,7 +101,7 @@ const { artwork } = Astro.props;
             </a>
             <a 
               class="share-link"
-              href={`https://www.facebook.com/sharer/sharer.php`}
+              href="https://www.facebook.com"
               target="_blank"
             >
               Facebook
