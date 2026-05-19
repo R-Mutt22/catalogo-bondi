@@ -1,0 +1,219 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navigation from '../components/Navigation.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout title="Política de Privacidad - El Bondi Colectivo">
+  <Navigation />
+  
+  <article class="legal-page">
+    <div class="legal-container">
+      <h1>Política de Privacidad</h1>
+      <p class="last-updated">Última actualización: Enero 2025</p>
+
+      <section class="legal-section">
+        <h2>1. Información que recopilamos</h2>
+        <p>
+          A través del formulario de contacto en nuestro sitio recopilamos los siguientes datos personales:
+        </p>
+        <ul>
+          <li><strong>Nombre:</strong> para identificarte en la comunicación</li>
+          <li><strong>Email:</strong> para contactarte con respuestas</li>
+          <li><strong>Teléfono (opcional):</strong> para comunicación directa</li>
+          <li><strong>Nombre de la obra de interés:</strong> para entender tus preferencias</li>
+          <li><strong>Mensaje:</strong> tu consulta o comentario</li>
+        </ul>
+      </section>
+
+      <section class="legal-section">
+        <h2>2. Cómo usamos tus datos</h2>
+        <p>Utilizamos la información que nos proporcionas ÚNICAMENTE para:</p>
+        <ul>
+          <li>Responder a tu consulta o pregunta</li>
+          <li>Contactarte sobre la obra de tu interés</li>
+          <li>Proporcionarte información sobre nuestras obras y servicios</li>
+          <li>Mejorar nuestro sitio web y experiencia del usuario</li>
+        </ul>
+        <p><strong>NUNCA venderemos ni compartiremos tus datos con terceros.</strong></p>
+      </section>
+
+      <section class="legal-section">
+        <h2>3. Almacenamiento y procesamiento de datos</h2>
+        <p>
+          Los datos del formulario se envían a <strong>Formspree</strong>, una plataforma de procesamiento de formularios confiable. 
+          Los datos se almacenan según la <a href="https://formspree.io/legal/privacy-policy/" target="_blank">Política de Privacidad de Formspree</a>.
+        </p>
+        <p>
+          Formspree cumple con GDPR y mantiene altos estándares de seguridad. Los emails se reenvían a nuestro correo de contacto.
+        </p>
+      </section>
+
+      <section class="legal-section">
+        <h2>4. Cookies y almacenamiento local</h2>
+        <p>
+          Utilizamos <strong>localStorage</strong> (almacenamiento local del navegador) para guardar:
+        </p>
+        <ul>
+          <li>Tus "Me gusta" en obras (para recordar favoritos)</li>
+        </ul>
+        <p>
+          <strong>Importante:</strong> Este almacenamiento es LOCAL en tu navegador. No enviamos esta información a nuestros servidores.
+          Se elimina automáticamente si limpias el caché de tu navegador.
+        </p>
+        <p>
+          Actualmente NO utilizamos cookies de seguimiento ni Google Analytics.
+        </p>
+      </section>
+
+      <section class="legal-section">
+        <h2>5. Seguridad de tus datos</h2>
+        <p>
+          Tomamos la seguridad de tus datos muy en serio:
+        </p>
+        <ul>
+          <li>Toda comunicación se realiza por HTTPS (encriptado)</li>
+          <li>No almacenamos datos sensibles en nuestro servidor</li>
+          <li>Formspree utiliza encriptación en tránsito y reposo</li>
+          <li>Acceso restringido a datos personales</li>
+        </ul>
+      </section>
+
+      <section class="legal-section">
+        <h2>6. Derechos sobre tus datos</h2>
+        <p>Tienes derecho a:</p>
+        <ul>
+          <li><strong>Acceder</strong> a tus datos personales</li>
+          <li><strong>Corregir</strong> información inexacta</li>
+          <li><strong>Eliminar</strong> tus datos (contacta a elbondicolectivo@gmail.com)</li>
+          <li><strong>Retirar consentimiento</strong> en cualquier momento</li>
+        </ul>
+        <p>
+          Para ejercer cualquiera de estos derechos, contacta a: 
+          <strong>elbondicolectivo@gmail.com</strong>
+        </p>
+      </section>
+
+      <section class="legal-section">
+        <h2>7. Cambios a esta política</h2>
+        <p>
+          Nos reservamos el derecho de actualizar esta Política de Privacidad en cualquier momento. 
+          Los cambios serán publicados en esta página. Te recomendamos revisar esta política periódicamente.
+        </p>
+      </section>
+
+      <section class="legal-section">
+        <h2>8. Contacto</h2>
+        <p>
+          Si tienes preguntas sobre esta Política de Privacidad o sobre cómo manejamos tus datos, 
+          contáctanos en:
+        </p>
+        <p>
+          <strong>Email:</strong> elbondicolectivo@gmail.com<br>
+          <strong>Ubicación:</strong> Rosario, Santa Fe, Argentina
+        </p>
+      </section>
+    </div>
+  </article>
+
+  <Footer />
+</Layout>
+
+<style>
+  .legal-page {
+    background: white;
+  }
+
+  .legal-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: var(--spacing-xl) var(--spacing-lg);
+  }
+
+  h1 {
+    font-size: 3rem;
+    margin-bottom: var(--spacing-sm);
+    font-weight: 700;
+  }
+
+  .last-updated {
+    color: var(--text-light);
+    font-size: 0.95rem;
+    margin-bottom: var(--spacing-xl);
+  }
+
+  .legal-section {
+    margin-bottom: var(--spacing-xl);
+    padding-bottom: var(--spacing-xl);
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .legal-section:last-child {
+    border-bottom: none;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+    margin-bottom: var(--spacing-lg);
+    font-weight: 700;
+  }
+
+  .legal-section p {
+    margin-bottom: var(--spacing-md);
+    line-height: 1.7;
+    color: var(--text);
+  }
+
+  .legal-section ul {
+    list-style: none;
+    margin-bottom: var(--spacing-md);
+  }
+
+  .legal-section ul li {
+    margin-bottom: var(--spacing-sm);
+    padding-left: var(--spacing-lg);
+    position: relative;
+    line-height: 1.6;
+  }
+
+  .legal-section ul li:before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--text-light);
+  }
+
+  .legal-section a {
+    color: var(--text);
+    text-decoration: underline;
+    transition: opacity 0.3s;
+  }
+
+  .legal-section a:hover {
+    opacity: 0.7;
+  }
+
+  strong {
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  @media (max-width: 768px) {
+    .legal-container {
+      padding: var(--spacing-lg) var(--spacing-md);
+    }
+
+    h1 {
+      font-size: 2rem;
+    }
+
+    h2 {
+      font-size: 1.2rem;
+    }
+
+    .legal-section {
+      margin-bottom: var(--spacing-lg);
+      padding-bottom: var(--spacing-lg);
+    }
+  }
+</style>

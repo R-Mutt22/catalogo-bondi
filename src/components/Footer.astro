@@ -4,30 +4,51 @@
 <footer class="footer">
   <div class="footer-container">
     <div class="footer-content">
+      <!-- SECCIÓN 1: INFORMACIÓN -->
       <div class="footer-section">
         <h4>El Bondi Colectivo</h4>
-        <p>Catálogo | Duty Free - Zona Franca</p>
+        <p>Catálogo de arte contemporáneo</p>
         <p class="address">Rosario, Santa Fe, Argentina</p>
       </div>
+
+      <!-- SECCIÓN 2: ENLACES PRINCIPALES -->
       <div class="footer-section">
-        <h4>Enlaces</h4>
+        <h4>Navegación</h4>
         <ul>
           <li><a href="/">Obras</a></li>
-          <li><a href="/historial">Historial</a></li>
+          <li><a href="/historial/">Historial</a></li>
           <li><a href="/contacto/">Contacto</a></li>
         </ul>
       </div>
+
+      <!-- SECCIÓN 3: REDES SOCIALES -->
       <div class="footer-section">
         <h4>Redes</h4>
         <ul>
           <li><a href="https://instagram.com/elbondicolectivo" target="_blank">Instagram</a></li>
           <li><a href="https://facebook.com/elbondicolectivo" target="_blank">Facebook</a></li>
           <li><a href="https://twitter.com/bondicolectivo" target="_blank">Twitter</a></li>
+          <!-- <li><a href="https://wa.me/543411234567" target="_blank">WhatsApp</a></li> -->
+        </ul>
+      </div>
+
+      <!-- SECCIÓN 4: LEGAL -->
+      <div class="footer-section">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="/privacidad/">Privacidad</a></li>
+          <li><a href="/terminos/">Términos</a></li>
+          <li><a href="mailto:elbondicolectivo@gmail.com">Contacto legal</a></li>
         </ul>
       </div>
     </div>
+
+    <!-- FOOTER BOTTOM -->
     <div class="footer-bottom">
-      <p>© 2026 El Bondi Colectivo. Todos los derechos reservados.</p>
+      <p>© 2025 El Bondi Colectivo. Todos los derechos reservados.</p>
+      <p class="footer-note">
+        Las obras de arte son propiedad de sus respectivos artistas.
+      </p>
     </div>
   </div>
 </footer>
@@ -41,13 +62,13 @@
   }
 
   .footer-container {
-    max-width: 1600px;
+    max-width: 1400px;
     margin: 0 auto;
   }
 
   .footer-content {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: var(--spacing-xl);
     margin-bottom: var(--spacing-xl);
     padding-bottom: var(--spacing-xl);
@@ -60,16 +81,19 @@
     letter-spacing: 0.05em;
     margin-bottom: var(--spacing-md);
     font-weight: 600;
+    color: var(--text);
   }
 
   .footer-section p {
     font-size: 0.85rem;
     color: var(--text-light);
     margin-bottom: var(--spacing-sm);
+    line-height: 1.5;
   }
 
   .address {
     color: var(--text-lighter) !important;
+    font-size: 0.8rem !important;
   }
 
   .footer-section ul {
@@ -83,31 +107,75 @@
   .footer-section ul li a {
     font-size: 0.85rem;
     color: var(--text-light);
-    transition: color 0.3s;
+    text-decoration: none;
+    transition: all 0.3s;
+    border-bottom: 1px solid transparent;
   }
 
   .footer-section ul li a:hover {
     color: var(--text);
+    border-bottom: 1px solid var(--text);
   }
 
   .footer-bottom {
     text-align: center;
+    padding-top: var(--spacing-lg);
   }
 
   .footer-bottom p {
     font-size: 0.8rem;
     color: var(--text-lighter);
+    margin-bottom: var(--spacing-xs);
   }
 
+  .footer-note {
+    font-size: 0.75rem;
+    color: var(--text-lighter);
+  }
+
+  /* RESPONSIVE */
   @media (max-width: 768px) {
     .footer {
       padding: var(--spacing-lg) var(--spacing-md);
+      margin-top: var(--spacing-lg);
     }
 
     .footer-content {
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
       gap: var(--spacing-lg);
       margin-bottom: var(--spacing-lg);
       padding-bottom: var(--spacing-lg);
+    }
+
+    .footer-section h4 {
+      font-size: 0.8rem;
+    }
+
+    .footer-section p {
+      font-size: 0.8rem;
+    }
+
+    .footer-section ul li a {
+      font-size: 0.8rem;
+    }
+
+    .footer-bottom p {
+      font-size: 0.75rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .footer {
+      padding: var(--spacing-lg) var(--spacing-sm);
+    }
+
+    .footer-content {
+      grid-template-columns: 1fr;
+      gap: var(--spacing-md);
+    }
+
+    .footer-bottom {
+      padding-top: var(--spacing-md);
     }
   }
 </style>

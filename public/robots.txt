@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /.env
+Disallow: /config
+
+Sitemap: https://catalogo-bondi.pages.dev/sitemap.xml

@@ -85,7 +85,9 @@ const { artwork } = Astro.props;
 
         <div class="precio-seccion">
           <p class="precio">{artwork.price}</p>
-          <button class="contactar-btn">Contactar</button>
+          <a href={`/contacto/?obra=${artwork.title}`} class="contactar-btn">
+            Contactar
+          </a>
         </div>
 
         <!-- COMPARTIR -->
@@ -233,6 +235,9 @@ const { artwork } = Astro.props;
     cursor: pointer;
     font-weight: 600;
     transition: all 0.3s;
+    display: inline-block;         /* ← AGREGADO */
+    text-decoration: none;        /* ← AGREGADO */
+    text-align: center;           /* ← AGREGADO */
   }
 
   .contactar-btn:hover {
