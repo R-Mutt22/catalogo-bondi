@@ -5,38 +5,42 @@ interface Props {
 }
 
 const { id, title } = Astro.props;
-const shareUrl = `${Astro.url.origin}/obra/${id}`;
+
+// CONSTRUIR URL DE FORMA CORRECTA EN PRODUCCIÓN
+const baseUrl = import.meta.env.SITE || 'https://catalogo-bondi.pages.dev';
+const shareUrl = `${baseUrl}/obra/${id}`;
 ---
 
-<div class="share-button-wrapper" data-id={id}>
+<div class="share-button-wrapper" data-id={id} data-title={title} data-url={shareUrl}>
   <button class="share-btn" data-id={id} aria-label="Compartir">
     <span class="share-icon">↗</span>
   </button>
   
   <div class="share-menu" data-id={id}>
-    <a href={`https://wa.me/?text=${encodeURIComponent(`Mira esta obra: "${title}" - ${shareUrl}`)}`}
-       target="_blank"
+    <a href="#"
        class="share-option whatsapp"
+       data-action="whatsapp"
        aria-label="Compartir en WhatsApp">
       WhatsApp
     </a>
     
-    <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`}
-       target="_blank"
+    <a href="#"
        class="share-option facebook"
+       data-action="facebook"
        aria-label="Compartir en Facebook">
       Facebook
     </a>
     
-    <a href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`"${title}"`)}&url=${encodeURIComponent(shareUrl)}`}
-       target="_blank"
+    <a href="#"
        class="share-option twitter"
+       data-action="twitter"
        aria-label="Compartir en Twitter">
       Twitter
     </a>
     
-    <a href={`mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(`Te comparto esta obra: "${title}" - ${shareUrl}`)}`}
+    <a href="#"
        class="share-option email"
+       data-action="email"
        aria-label="Compartir por Email">
       Email
     </a>
@@ -51,9 +55,16 @@ const shareUrl = `${Astro.url.origin}/obra/${id}`;
       const id = btn.getAttribute('data-id');
       if (!id) return;
       
-      const menu = document.querySelector(`.share-menu[data-id="${id}"]`);
-      if (!menu) return;
+      const wrapper = btn.closest('.share-button-wrapper') as HTMLElement;
+      const menu = document.querySelector(`.share-menu[data-id="${id}"]`) as HTMLElement;
       
+      if (!menu || !wrapper) return;
+      
+      // Obtener datos del wrapper
+      const title = wrapper.getAttribute('data-title') || 'Obra';
+      const shareUrl = wrapper.getAttribute('data-url') || window.location.href;
+      
+      // Click en botón de compartir
       btn.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -66,6 +77,51 @@ const shareUrl = `${Astro.url.origin}/obra/${id}`;
         });
         
         menu.classList.toggle('active');
+      });
+      
+      // Generar URLs cuando se abre el menú
+      menu.addEventListener('click', (e) => {
+        const target = e.target as HTMLElement;
+        const action = target.getAttribute('data-action');
+        
+        if (!action) return;
+        
+        e.preventDefault();
+        
+        const message = `Mira esta obra: "${title}"`;
+        const fullMessage = `${message} - ${shareUrl}`;
+        
+        let url = '';
+        
+        switch(action) {
+          case 'whatsapp':
+            url = `https://wa.me/?text=${encodeURIComponent(fullMessage)}`;
+            break;
+          case 'facebook':
+            url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
+            break;
+          case 'twitter':
+            url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(message)}&url=${encodeURIComponent(shareUrl)}`;
+            break;
+          case 'email':
+            url = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(fullMessage)}`;
+            break;
+        }
+        
+        if (url) {
+          if (action === 'email') {
+            // Email no abre en ventana nueva
+            window.location.href = url;
+          } else {
+            // Redes sociales abren en ventana nueva
+            window.open(url, '_blank', 'width=600,height=400');
+          }
+        }
+        
+        // Cerrar menú después de compartir
+        setTimeout(() => {
+          menu.classList.remove('active');
+        }, 100);
       });
     });
     
